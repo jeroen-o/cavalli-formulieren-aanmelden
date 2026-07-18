@@ -11,6 +11,7 @@
     --paper:#E8E6DB; --wit:#FFFFFF;
   }
   *{box-sizing:border-box}
+  b,strong,th,h1,h2,h3{font-weight:400}
   html,body{margin:0;padding:0}
   body{background:var(--paper);color:var(--tekst);
        font:15px/1.5 Carlito,Calibri,"Segoe UI",Roboto,Arial,sans-serif;}
@@ -23,7 +24,7 @@
     background:var(--label2);color:var(--donker);padding:9px 14px 8px 14px;font:inherit;font-size:13.5px;
     border-radius:8px 8px 0 0;cursor:pointer;position:relative;top:1px;}
   nav.tabs button:hover{background:var(--label1);color:var(--tekst);}
-  nav.tabs button.on{background:var(--wit);color:var(--primair);font-weight:700;
+  nav.tabs button.on{background:var(--wit);color:var(--primair);font-weight:400;
     border-color:var(--rand);box-shadow:0 -2px 0 var(--primair) inset;}
   nav.tabs button:focus-visible{outline:2px solid var(--donker);outline-offset:-2px;}
 
@@ -32,14 +33,14 @@
     padding:28px 32px 34px 32px;box-shadow:0 2px 12px rgba(58,57,48,.12);}
   .sheethead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;
     border-bottom:1.5pt solid var(--primair);padding-bottom:6px;margin:0 0 6px 0;}
-  .sheet h2{font-weight:700;font-size:17px;margin:0;color:var(--primair);text-align:left;}
+  .sheet h2{font-weight:400;font-size:17px;margin:0;color:var(--primair);text-align:left;}
   img.sheetlogo{height:42px;flex:none;}
   .sheet p.doc-sub{margin:2px 0 16px 0;color:var(--donker);font-size:13px;font-style:italic;text-align:left;}
 
   .toolbar{display:flex;gap:10px;align-items:center;margin:0 0 14px 0;flex-wrap:wrap;}
   .toolbar .spacer{flex:1}
   button.btn, label.btn{appearance:none;border:1px solid var(--primair);background:var(--primair);color:var(--wit);
-    font:inherit;font-size:14px;font-weight:700;padding:9px 16px;border-radius:4px;cursor:pointer;display:inline-block;}
+    font:inherit;font-size:14px;font-weight:400;padding:9px 16px;border-radius:4px;cursor:pointer;display:inline-block;}
   button.btn:hover, label.btn:hover{background:var(--donker);border-color:var(--donker);}
   button.btn.ghost, label.btn.ghost{background:transparent;color:var(--donker);border-color:var(--donker);}
   button.btn.ghost:hover, label.btn.ghost:hover{background:var(--label1);}
@@ -60,15 +61,20 @@
   .avfull{font-size:13px;margin:0 0 18px 0;}
   .avfull table{border-collapse:collapse;width:100%;}
   .avfull td{border:.5pt solid var(--rand);padding:5px 8px;vertical-align:top;}
-  .avfull td.n{width:44px;font-weight:700;color:var(--donker);background:var(--label1);}
-  .avfull tr.art td{background:var(--primair);color:var(--wit);font-weight:700;}
+  .avfull td.n{width:44px;font-weight:400;color:var(--donker);background:var(--label1);}
+  .avfull tr.art td{background:var(--primair);color:var(--wit);font-weight:400;}
   .dossier{margin:14px 0 0 0;display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;}
+  .dossier.beg{margin-top:16px;}
+  .dossier.beg label{font-size:14px;color:var(--donker);}
+  .dossier.beg input#begNaam{width:220px;border:1px solid var(--rand);border-radius:4px;
+    padding:8px 10px;font:inherit;font-size:13.5px;background:var(--wit);}
+  .dossier.beg input#begNaam:focus{outline:none;border-color:var(--primair);}
 
   table.f{border-collapse:collapse;width:100%;margin:0 0 18px 0;}
   table.f th.sec{background:var(--primair);color:var(--wit);border:.5pt solid var(--rand);text-align:left;
     padding:7px 10px;font-size:14px;letter-spacing:.2px;}
   table.f td{border:.5pt solid var(--rand);padding:6px 10px;vertical-align:top;}
-  table.f td.lbl{width:42%;font-weight:700;font-size:13.5px;color:var(--donker);}
+  table.f td.lbl{width:42%;font-weight:400;font-size:13.5px;color:var(--donker);}
   table.f tr:nth-child(odd) td.lbl{background:var(--label2);}
   table.f tr:nth-child(even) td.lbl{background:var(--label1);}
   table.f td.val{width:58%;background:var(--invul);}
@@ -80,18 +86,19 @@
   label.chk{display:inline-flex;align-items:center;gap:5px;margin:2px 14px 2px 0;font-size:14px;cursor:pointer;}
   label.chk input{accent-color:var(--primair);width:15px;height:15px;}
   .stat{color:var(--tekst);font-size:14px;}
-  .cval{font-weight:700;color:var(--tekst);border-bottom:1px dotted var(--donker);padding:0 2px;}
+  .cval{font-weight:400;color:var(--tekst);border-bottom:1px dotted var(--donker);padding:0 2px;}
+  td.val .cval{font-weight:400;}
   p.blk{margin:0 0 14px 0;}
-  p.blk.b{font-weight:700;color:var(--donker);}
+  p.blk.b{font-weight:400;color:var(--donker);}
   p.note{font-style:italic;color:var(--donker);font-size:13.5px;margin:0 0 16px 0;}
-  h3.blk{font-weight:700;font-size:15px;margin:6px 0 10px 0;color:var(--donker);}
+  h3.blk{font-weight:400;font-size:15px;margin:6px 0 10px 0;color:var(--donker);}
   details.av{border:.5pt solid var(--rand);border-radius:6px;margin:0 0 18px 0;background:var(--invul);}
-  details.av summary{cursor:pointer;padding:10px 12px;font-weight:700;font-size:14px;color:var(--primair);}
+  details.av summary{cursor:pointer;padding:10px 12px;font-weight:400;font-size:14px;color:var(--primair);}
   details.av .avbody{padding:4px 16px 14px 16px;font-size:13px;}
   details.av table{border-collapse:collapse;width:100%;}
   details.av td{border:.5pt solid var(--rand);padding:5px 8px;vertical-align:top;}
-  details.av td.n{width:44px;font-weight:700;color:var(--donker);background:var(--label1);}
-  details.av tr.art td{background:var(--primair);color:var(--wit);font-weight:700;}
+  details.av td.n{width:44px;font-weight:400;color:var(--donker);background:var(--label1);}
+  details.av tr.art td{background:var(--primair);color:var(--wit);font-weight:400;}
   .sig{border-bottom:1px solid var(--tekst);height:44px;max-width:340px;margin:6px 0 4px 0;}
   .sigcap{font-size:13px;color:var(--donker);margin:0 0 16px 0;}
   .pane{display:none;} .pane.on{display:block;}
@@ -108,11 +115,24 @@
 <body>
 <header class="app">
   <p class="sub">Gedeelde gegevens (overledene &amp; opdrachtgever) worden automatisch overgenomen op alle tabbladen. Gegevens blijven alleen in dit venster bewaard; bij sluiten of verversen met niet-opgeslagen wijzigingen vraagt de browser eerst om bevestiging.</p>
+  <div class="dossier beg">
+    <label for="begSelect">Uitvaartbegeleider:</label>
+    <select id="begSelect" class="fmt">
+      <option value="" selected>— kies —</option>
+      <option value="0">Amber Teunissen - Cavalli</option>
+      <option value="1">Lonneke van het Erve</option>
+      <option value="2">Hanneke Meijerink</option>
+      <option value="anders">Anders (zelf invullen)</option>
+    </select>
+    <input type="text" id="begNaam" class="fmt" placeholder="Naam uitvaartbegeleider" aria-label="Naam uitvaartbegeleider">
+    <span class="hint" id="begStatus">Naam en telefoonnummer worden op alle formulieren ingevuld.</span>
+  </div>
   <div class="dossier">
     <button class="btn" id="jsonSave" type="button">Dossier opslaan (JSON)</button>
     <label class="btn ghost" for="jsonFile" tabindex="0">Dossier inlezen (JSON)</label>
     <input type="file" id="jsonFile" accept=".json,application/json" hidden>
     <button class="btn ghost" id="alleDocx" type="button">Alle formulieren downloaden (zip)</button>
+    <label class="chk zuinig"><input type="checkbox" id="alleZw"> Zwart-wit (alleen logo in kleur)</label>
     <span class="hint" id="jsonStatus">Slaat álle velden van alle tabbladen op in één bestand.</span>
   </div>
 </header>
@@ -251,7 +271,7 @@ const FORMS=[
  sub:"", file:"Formulier_crematie",
  blocks:[
   {t:"sec",title:"Overledene",rows:[R("Registratienummer",X("ov_reg")),...OV_BASIS,...OV_OVL2,
-    R("Burgerlijke staat",X("ov_burgstaat")),R("Geslacht",CV("geslacht")),R("Leeftijd",X("ov_leeftijd"))]},
+    R("Burgerlijke staat",X("ov_burgstaat")),R("Geslacht",CV("geslacht")),R("Leeftijd",CV("leeftijd"))]},
   {t:"sec",title:"Opdrachtgever",rows:[...OG_BASIS,
     R("Geboortedatum",X("og_gebdatum")),R("Geboorteplaats",X("og_gebplaats")),
     R("E-mail",X("og_email")),R("Telefoonnummer",X("og_tel")),
@@ -331,8 +351,8 @@ const FORMS=[
     R("Adres",T("Soestdijkseweg Zuid 207, 3721 AC Bilthoven")),
     R("Telefoonnummer",X("ui_tel")),
     R("E-mailadres",T("info@cavalli-uitvaartbegeleiding.nl"))]},
-  {t:"p",b:1,tpl:"Nabestaanden — familie van {k:ui_naamovl}"},
-  {t:"sec",title:"",rows:[R("Naam",X("og_achternaam")),R("Adres",X("og_adres")),
+  {t:"p",b:1,tpl:"Nabestaanden — familie van {c:aanhefnaam}"},
+  {t:"sec",title:"",rows:[R("Naam",CV("og_volnaam")),R("Adres",X("og_adres")),
     R("Telefoonnummer",X("og_tel")),R("E-mailadres",X("og_email"))]},
   {t:"h",s:"Verklaren hierbij gezamenlijk:"},
   {t:"p",tpl:"Dat zij uitstel wensen van de wettelijke termijn voor begraven/cremeren van {k:ui_naamovl}, geboren op {k:ov_gebdatum} overleden op {k:ov_ovldatum} te {k:ov_ovlplaats}."},
@@ -370,15 +390,16 @@ const FORMS=[
  blocks:[
   {t:"sec",title:"Formulieren invullen",rows:[
     R("Tabbladen",T("Elk formulier heeft een eigen tabblad: Persoonsgegevens, Opdrachtbevestiging, Aangifte, Begrafenis, Crematie, Akte van cessie, Uitstel begraven, Registratienummer en Algemene voorwaarden. Begin bij Persoonsgegevens.")),
+    R("Uitvaartbegeleider kiezen",T("Kies bovenaan de uitvaartbegeleider (Amber Teunissen, Lonneke van het Erve of Hanneke Meijerink) of vul zelf een naam in; de naam — en bij een keuze uit de lijst ook het telefoonnummer — wordt op alle formulieren ingevuld.")),
     R("Gedeelde gegevens",T("Gegevens van de overledene en de opdrachtgever vult u één keer in; ze worden direct automatisch overgenomen op alle andere tabbladen.")),
     R("Automatische aanhef",T("De aangekruiste keuze De heer/Mevrouw en de achternaam van de overledene vullen automatisch de openingszin van de opdrachtbevestiging.")),
     R("Aankruisvakjes",T("Keuzes zoals soort uitvaart, grafrechten of wensen bij de dienst kruist u aan; in de documenten verschijnen ze als ☒ (aangekruist) en ☐ (leeg).")),
     R("Handtekeningen",T("Bij elke handtekening staat een veld om de naam in te vullen; de handtekening zelf wordt op papier gezet.")),
-    R("Automatisch gekoppeld",T("Geslacht volgt de aanhef (De heer = man, Mevrouw = vrouw). Op de akte van cessie worden de verzekerde (= overledene) en de erfgenaam (= opdrachtgever) automatisch overgenomen, inclusief adres."))]},
+    R("Automatisch gekoppeld",T("Geslacht volgt de aanhef (De heer = man, Mevrouw = vrouw) en de leeftijd wordt berekend uit de geboortedatum en overlijdensdatum. Op de akte van cessie worden de verzekerde (= overledene) en de erfgenaam (= opdrachtgever) automatisch overgenomen, inclusief adres."))]},
   {t:"sec",title:"Opslaan en downloaden",rows:[
     R("Bestandsformaat kiezen",T("Kies in het uitklapmenu: .docx (aanbevolen, ook voor Google Docs en Google Drive), .doc (oudere Word-versies), .odt (LibreOffice/OpenOffice), .rtf (universeel), .txt (platte tekst) of .dotx (Word-sjabloon). Klik daarna op Opslaan.")),
     R("Bestandsnaam",T("De naam wordt automatisch voornaam_achternaam_datum_formulier. Het dossier (JSON) krijgt datum \u00e9n tijd in de naam; PDF's eindigen op _kleur of _zwart-wit.")),
-    R("Alles in \u00e9\u00e9n keer",T("De knop 'Alle formulieren downloaden (zip)' bovenaan levert alle formulieren en de algemene voorwaarden als Word-bestanden in \u00e9\u00e9n zip.")),
+    R("Alles in één keer",T("De knop 'Alle formulieren downloaden (zip)' bovenaan levert alle formulieren en de algemene voorwaarden als Word-bestanden in één zip — in kleur, of met het vinkje ernaast in zwart-wit met alleen het logo in kleur.")),
     R("Downloaden als PDF",T("Opent het afdrukvenster in een nieuw venster; kies daar 'Opslaan als PDF'. Sta hiervoor pop-ups toe.")),
     R("Zuinig printen",T("Vink 'Zuinig printen' aan voor een zwart-witversie waarin alleen het logo in kleur blijft — bespaart inkt bij het printen.")),
     R("Huisstijl",T("Alle documenten krijgen automatisch het Cavalli-logo, de huisstijlkleuren en de voettekst met paginanummering."))]},
@@ -501,8 +522,37 @@ const COMPUTED={
   geslacht(){
     const h=!!S.ov_heer, m=!!S.ov_mevrouw;
     return h&&!m?"man":m&&!h?"vrouw":"…";
+  },
+  vz_naam(){ return val("ui_verzorger")||"…"; },
+  familie_van(){ return "Namens de familie van "+COMPUTED.aanhefnaam(); },
+  leeftijd(){
+    const g=parseNlDatum(val("ov_gebdatum")), o=parseNlDatum(val("ov_ovldatum"));
+    if(!g||!o) return "…";
+    let j=o.j-g.j;
+    if(o.m<g.m||(o.m===g.m&&o.d<g.d)) j--;
+    return j>=0&&j<130?String(j):"…";
   }
 };
+/* Nederlandse datum lezen: 11-02-1969, 11/02/'69, 3 maart 1941, 14 juli 2026 */
+const NL_MAANDEN={jan:1,feb:2,mrt:3,maa:3,apr:4,mei:5,jun:6,jul:7,aug:8,sep:9,okt:10,nov:11,dec:12};
+function parseNlDatum(s){
+  s=(s||"").toLowerCase().trim();
+  if(!s) return null;
+  let m=s.match(/^(\d{1,2})[-\/. ](\d{1,2})[-\/. ]'?(\d{2}|\d{4})$/);
+  if(m){
+    let j=+m[3]; if(j<100) j+=(j>=30?1900:2000);
+    const d=+m[1],mnd=+m[2];
+    if(d>=1&&d<=31&&mnd>=1&&mnd<=12) return {d,m:mnd,j};
+    return null;
+  }
+  m=s.match(/^(\d{1,2})\s+([a-z]+)\.?\s+'?(\d{2}|\d{4})$/);
+  if(m){
+    const mnd=NL_MAANDEN[m[2].slice(0,3)];
+    let j=+m[3]; if(j<100) j+=(j>=30?1900:2000);
+    if(mnd&&+m[1]>=1&&+m[1]<=31) return {d:+m[1],m:mnd,j};
+  }
+  return null;
+}
 function updateComputed(){
   document.querySelectorAll("[data-c]").forEach(el=>{
     const fn=COMPUTED[el.dataset.c]; if(fn) el.textContent=fn();
@@ -543,8 +593,8 @@ function avHTML(){
     <div class="avbody">${AV_INTRO.map(p=>`<p>${esc(p)}</p>`).join("")}<table>${rows}</table></div></details>`;
 }
 function signsHTML(){
-  return `<div class="sig"></div><p class="sigcap" data-cap="ui1">(naam) — Cavalli Uitvaartbegeleiding</p>
-          <div class="sig"></div><p class="sigcap" data-cap="ui2">(naam) — Namens de familie van de overledene</p>`;
+  return `<div class="sig"></div><p class="sigcap"><span class="cval" data-c="vz_naam"></span><br>Cavalli Uitvaartbegeleiding</p>
+          <div class="sig"></div><p class="sigcap"><span class="cval" data-c="og_volnaam"></span><br><span class="cval" data-c="familie_van"></span></p>`;
 }
 
 FORMS.forEach((f,i)=>{
@@ -610,6 +660,7 @@ function show(id){
 
 /* Waarden binden + synchroniseren over tabbladen heen */
 let DIRTY=false; // zijn er niet-opgeslagen wijzigingen?
+let DOCX_BW=false; // Word-bestanden in zwart-wit (alleen logo in kleur)
 window.addEventListener("beforeunload",e=>{
   if(DIRTY){ e.preventDefault(); e.returnValue=""; }
 });
@@ -685,9 +736,9 @@ function docBody(f){
     else if(bl.t==="avt") body+=avTableHtmlDoc();
     else if(bl.t==="signs"){
       body+=`<p>&nbsp;</p><p>………………………………………………………</p>
-        <p>(${dots("ui_verzorger")})<br>Cavalli Uitvaartbegeleiding</p>
+        <p>${esc(COMPUTED.vz_naam())}<br>Cavalli Uitvaartbegeleiding</p>
         <p>&nbsp;</p><p>………………………………………………………</p>
-        <p>(${dots("og_achternaam")})<br>Namens de familie van ${dots("ui_naamovl")}</p>`;
+        <p>${esc(COMPUTED.og_volnaam())}<br>${esc(COMPUTED.familie_van())}</p>`;
     }
   });
   return body;
@@ -697,27 +748,26 @@ body {font-family:Carlito,Calibri,sans-serif; font-size:11pt; color:#3A3930;}
 p {margin:0 0 8pt 0;}
 table.kop {border:none; margin:0 0 10pt 0;}
 table.kop td {border:none; border-bottom:1.5pt solid #959369; padding:0 0 4pt 0;}
-td.kt {font-size:13pt; font-weight:bold; color:#959369; vertical-align:bottom;}
+td.kt {font-size:13pt; color:#959369; vertical-align:bottom;}
 td.kl {text-align:right; width:110pt; vertical-align:bottom;}
-p.ttl2 {font-size:11pt; font-weight:bold; color:#959369;
+p.ttl2 {font-size:11pt; color:#959369;
   border-bottom:0.75pt solid #959369; padding-bottom:3pt; margin:0 0 8pt 0;}
 p.sub {text-align:center; color:#6E6C4B; margin:0 0 10pt 0;}
-p.b {font-weight:bold; color:#6E6C4B;}
+p.b {color:#6E6C4B;}
 p.noot {color:#6E6C4B; font-size:11pt;}
 p.klein, td.klein {font-size:11pt;}
 table {border-collapse:collapse; width:100%; margin:0 0 8pt 0;}
 td {border:0.5pt solid #D9D7C8; padding:2.5pt 6pt; font-size:11pt; vertical-align:top;}
-td.sec {background:#959369; color:#FFFFFF; font-weight:bold; font-size:11pt;}
-td.lbl {width:42%; font-weight:bold; color:#6E6C4B;}
+td.sec {background:#959369; color:#FFFFFF; font-size:11pt;}
+td.lbl {width:42%; color:#6E6C4B;}
 td.inv {background:#FAFAF7;}
 `;
 /* ============ Echte .docx-generator (Google Docs-compatibel) ============ */
 const XE=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 function run(t,o={}){
   let rpr="";
-  if(o.b) rpr+="<w:b/>";
   if(o.i) rpr+="<w:i/>";
-  if(o.color) rpr+=`<w:color w:val="${o.color}"/>`;
+  if(o.color&&!DOCX_BW) rpr+=`<w:color w:val="${o.color}"/>`;
   if(o.sz) rpr+=`<w:sz w:val="${o.sz}"/><w:szCs w:val="${o.sz}"/>`;
   const txt=String(t??"").split("\n").map(seg=>`<w:t xml:space="preserve">${XE(seg)}</w:t>`)
     .join("<w:br/>");
@@ -736,13 +786,14 @@ function tc(parXml,o={}){
   if(o.w) pr+=`<w:tcW w:w="${o.w}" w:type="dxa"/>`;
   if(o.span) pr+=`<w:gridSpan w:val="${o.span}"/>`;
   if(o.borders) pr+=o.borders;
-  if(o.fill) pr+=`<w:shd w:val="clear" w:color="auto" w:fill="${o.fill}"/>`;
+  if(o.fill&&!DOCX_BW) pr+=`<w:shd w:val="clear" w:color="auto" w:fill="${o.fill}"/>`;
   pr+=`<w:vAlign w:val="${o.va||"top"}"/></w:tcPr>`;
   return `<w:tc>${pr}${parXml}</w:tc>`;
 }
 function tbl(rowsXml,grid,o={}){
+  const bc=DOCX_BW?"000000":"D9D7C8";
   const borders=o.noBorders?"":
-   `<w:tblBorders><w:top w:val="single" w:sz="4" w:color="D9D7C8"/><w:left w:val="single" w:sz="4" w:color="D9D7C8"/><w:bottom w:val="single" w:sz="4" w:color="D9D7C8"/><w:right w:val="single" w:sz="4" w:color="D9D7C8"/><w:insideH w:val="single" w:sz="4" w:color="D9D7C8"/><w:insideV w:val="single" w:sz="4" w:color="D9D7C8"/></w:tblBorders>`;
+   `<w:tblBorders><w:top w:val="single" w:sz="4" w:color="${bc}"/><w:left w:val="single" w:sz="4" w:color="${bc}"/><w:bottom w:val="single" w:sz="4" w:color="${bc}"/><w:right w:val="single" w:sz="4" w:color="${bc}"/><w:insideH w:val="single" w:sz="4" w:color="${bc}"/><w:insideV w:val="single" w:sz="4" w:color="${bc}"/></w:tblBorders>`;
   const g=grid.map(w=>`<w:gridCol w:w="${w}"/>`).join("");
   return `<w:tbl><w:tblPr><w:tblW w:w="9072" w:type="dxa"/>${borders}<w:tblCellMar><w:left w:w="80" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${g}</w:tblGrid>${rowsXml}</w:tbl>`;
 }
@@ -781,8 +832,8 @@ function avTableXml(){
   return tbl(rows,[800,8272]);
 }
 function docBodyXml(f){
-  const kopB='<w:tcBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:right w:val="nil"/><w:insideV w:val="nil"/><w:bottom w:val="single" w:sz="12" w:color="959369"/></w:tcBorders>';
-  let B=tbl(`<w:tr>${tc(par(run(f.title,{b:1,color:"959369",sz:26}),{after:40}),{w:6800,borders:kopB,va:"bottom"})}${tc(par(LOGO_DRAW,{jc:"right",after:40}),{w:2272,borders:kopB,va:"bottom"})}</w:tr>`,[6800,2272],{noBorders:1})+par("",{after:80});
+  const kopB=`<w:tcBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:right w:val="nil"/><w:insideV w:val="nil"/><w:bottom w:val="single" w:sz="12" w:color="${DOCX_BW?"000000":"959369"}"/></w:tcBorders>`;
+  let B=tbl(`<w:tr>${tc(par(run(f.title,{color:"959369",sz:26}),{after:40}),{w:6800,borders:kopB,va:"bottom"})}${tc(par(LOGO_DRAW,{jc:"right",after:40}),{w:2272,borders:kopB,va:"bottom"})}</w:tr>`,[6800,2272],{noBorders:1})+par("",{after:80});
   if(f.sub) B+=par(run(f.sub,{i:1,color:"6E6C4B"}),{});
   f.blocks.forEach(bl=>{
     if(bl.t==="sec") B+=secXml(bl);
@@ -796,7 +847,7 @@ function docBodyXml(f){
     else if(bl.t==="h") B+=par(run(bl.s,{b:1,color:"6E6C4B"}),{});
     else if(bl.t==="i") B+=par(run(bl.s,{i:1,color:"6E6C4B"}),{});
     else if(bl.t==="av"){
-      B+=par(run("Algemene voorwaarden",{b:1,color:"959369"}),{pb:1,border:{sz:6,color:"959369"},after:120});
+      B+=par(run("Algemene voorwaarden",{color:"959369"}),{pb:1,border:{sz:6,color:DOCX_BW?"000000":"959369"},after:120});
       B+=AV_INTRO.map(p=>par(run(p),{after:100})).join("");
       B+=avTableXml();
     }
@@ -804,9 +855,9 @@ function docBodyXml(f){
     else if(bl.t==="avt") B+=avTableXml();
     else if(bl.t==="signs"){
       B+=par(run(""),{})+par(run("………………………………………………………"),{})+
-         par(run(`(${val("ui_verzorger")||"…"})`)+`<w:r><w:br/></w:r>`+run("Cavalli Uitvaartbegeleiding"),{after:240})+
+         par(run(COMPUTED.vz_naam())+`<w:r><w:br/></w:r>`+run("Cavalli Uitvaartbegeleiding"),{after:240})+
          par(run(""),{})+par(run("………………………………………………………"),{})+
-         par(run(`(${val("og_achternaam")||"…"})`)+`<w:r><w:br/></w:r>`+run(`Namens de familie van ${val("ui_naamovl")||"…"}`),{});
+         par(run(COMPUTED.og_volnaam())+`<w:r><w:br/></w:r>`+run(COMPUTED.familie_van()),{});
     }
   });
   return B;
@@ -846,7 +897,11 @@ function zipStore(files){
     {type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
 }
 function b64ToU8(b64){const bin=atob(b64);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u;}
-function buildDocx(f,template){
+function buildDocx(f,template,bw){
+  DOCX_BW=!!bw;
+  try{ return buildDocxInner(f,template); } finally { DOCX_BW=false; }
+}
+function buildDocxInner(f,template){
   const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"><w:body>${docBodyXml(f)}<w:sectPr><w:footerReference w:type="default" r:id="rId2"/><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1417" w:right="1417" w:bottom="1134" w:left="1417" w:header="708" w:footer="708" w:gutter="0"/></w:sectPr></w:body></w:document>`;
   const enc=new TextEncoder();
   return zipStore([
@@ -965,9 +1020,9 @@ function odtBody(f){
     else if(bl.t==="avt") B+=avTableOdt();
     else if(bl.t==="signs"){
       B+=odtP("","P0")+odtP("………………………………………………………","P0")+
-         odtP(`(${val("ui_verzorger")||"…"})\nCavalli Uitvaartbegeleiding`,"P0")+
+         odtP(COMPUTED.vz_naam()+"\nCavalli Uitvaartbegeleiding","P0")+
          odtP("","P0")+odtP("………………………………………………………","P0")+
-         odtP(`(${val("og_achternaam")||"…"})\nNamens de familie van ${val("ui_naamovl")||"…"}`,"P0");
+         odtP(COMPUTED.og_volnaam()+"\n"+COMPUTED.familie_van(),"P0");
     }
   });
   return B;
@@ -994,11 +1049,11 @@ function buildOdt(f){
 <style:style style:name="PC" style:family="paragraph"><style:paragraph-properties fo:margin-bottom="0cm"/></style:style>
 <style:style style:name="PR" style:family="paragraph"><style:paragraph-properties fo:margin-bottom="0cm" fo:text-align="end"/></style:style>
 <style:style style:name="PBT" style:family="paragraph"><style:paragraph-properties fo:break-before="page" fo:margin-bottom="0.2cm" fo:border-bottom="0.026cm solid #959369" fo:padding-bottom="0.08cm"/></style:style>
-<style:style style:name="Ttl" style:family="text"><style:text-properties fo:font-weight="bold" fo:color="#959369" fo:font-size="13pt"/></style:style>
-<style:style style:name="TB" style:family="text"><style:text-properties fo:font-weight="bold" fo:color="#6E6C4B"/></style:style>
-<style:style style:name="TBs" style:family="text"><style:text-properties fo:font-weight="bold" fo:color="#6E6C4B" fo:font-size="11pt"/></style:style>
-<style:style style:name="TW" style:family="text"><style:text-properties fo:font-weight="bold" fo:color="#FFFFFF"/></style:style>
-<style:style style:name="TWs" style:family="text"><style:text-properties fo:font-weight="bold" fo:color="#FFFFFF" fo:font-size="11pt"/></style:style>
+<style:style style:name="Ttl" style:family="text"><style:text-properties fo:color="#959369" fo:font-size="13pt"/></style:style>
+<style:style style:name="TB" style:family="text"><style:text-properties fo:color="#6E6C4B"/></style:style>
+<style:style style:name="TBs" style:family="text"><style:text-properties fo:color="#6E6C4B" fo:font-size="11pt"/></style:style>
+<style:style style:name="TW" style:family="text"><style:text-properties fo:color="#FFFFFF"/></style:style>
+<style:style style:name="TWs" style:family="text"><style:text-properties fo:color="#FFFFFF" fo:font-size="11pt"/></style:style>
 <style:style style:name="TI" style:family="text"><style:text-properties fo:font-style="italic" fo:color="#6E6C4B"/></style:style>
 <style:style style:name="TS" style:family="text"><style:text-properties fo:font-size="11pt"/></style:style>
 </office:automatic-styles>
@@ -1039,8 +1094,8 @@ function rtfAvTable(brd){
   let B="";
   AV.forEach(([n,t])=>{
     const head=!n.includes(".");
-    if(head) B+=`\\trowd\\trgaph80\\clcbpat1${brd()}\\cellx800\\clcbpat1${brd()}\\cellx9072\\pard\\intbl\\sa0{\\b\\fs22\\cf4 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\b\\fs22\\cf4 ${resc(t)}}\\cell\\row `;
-    else B+=`\\trowd\\trgaph80\\clcbpat5${brd()}\\cellx800\\clcbpat7${brd()}\\cellx9072\\pard\\intbl\\sa0{\\b\\fs22\\cf2 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\fs22 ${resc(t)}}\\cell\\row `;
+    if(head) B+=`\\trowd\\trgaph80\\clcbpat1${brd()}\\cellx800\\clcbpat1${brd()}\\cellx9072\\pard\\intbl\\sa0{\\fs22\\cf4 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\fs22\\cf4 ${resc(t)}}\\cell\\row `;
+    else B+=`\\trowd\\trgaph80\\clcbpat5${brd()}\\cellx800\\clcbpat7${brd()}\\cellx9072\\pard\\intbl\\sa0{\\fs22\\cf2 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\fs22 ${resc(t)}}\\cell\\row `;
   });
   return B;
 }
@@ -1053,10 +1108,10 @@ function buildRtf(f){
   const pict=`{\\pict\\pngblip\\picw201\\pich125\\picwgoal1500\\pichgoal933 ${hex}}`;
   const brd=n=>`\\clbrdrt\\brdrs\\brdrw10\\brdrcf8\\clbrdrl\\brdrs\\brdrw10\\brdrcf8\\clbrdrb\\brdrs\\brdrw10\\brdrcf8\\clbrdrr\\brdrs\\brdrw10\\brdrcf8`;
   function rowHead(t){
-    return `\\trowd\\trgaph80\\clcbpat1${brd()}\\cellx9072\\pard\\intbl\\sa0{\\b\\cf4 ${resc(t)}}\\cell\\row `;
+    return `\\trowd\\trgaph80\\clcbpat1${brd()}\\cellx9072\\pard\\intbl\\sa0{\\cf4 ${resc(t)}}\\cell\\row `;
   }
   let B=`\\trowd\\trgaph40\\clbrdrb\\brdrs\\brdrw30\\brdrcf1\\clvertalb\\cellx6800\\clbrdrb\\brdrs\\brdrw30\\brdrcf1\\clvertalb\\cellx9072`+
-    `\\pard\\intbl\\sa40{\\b\\fs26\\cf1 ${resc(f.title)}}\\cell\\pard\\intbl\\qr ${pict}\\cell\\row \\pard\\sa120\\par `;
+    `\\pard\\intbl\\sa40{\\fs26\\cf1 ${resc(f.title)}}\\cell\\pard\\intbl\\qr ${pict}\\cell\\row \\pard\\sa120\\par `;
   if(f.sub) B+=`\\pard\\sa120{\\i\\cf2 ${resc(f.sub)}}\\par `;
   f.blocks.forEach(bl=>{
     if(bl.t==="sec"){
@@ -1068,7 +1123,7 @@ function buildRtf(f){
         else if(r.stack) v=r.it.map(itemTxt).filter(Boolean).map(resc).join("\\line ");
         else v=resc(r.it.map(itemTxt).filter(Boolean).join("   "));
         B+=`\\trowd\\trgaph80\\clcbpat${zeb}${brd()}\\cellx3810\\clcbpat7${brd()}\\cellx9072`+
-           `\\pard\\intbl\\sa0{\\b\\cf2 ${resc(r.l||"")}}\\cell\\pard\\intbl\\sa0 ${v}\\cell\\row `;
+           `\\pard\\intbl\\sa0{\\cf2 ${resc(r.l||"")}}\\cell\\pard\\intbl\\sa0 ${v}\\cell\\row `;
       });
       B+=`\\pard\\sa60\\par `;
     }
@@ -1076,26 +1131,26 @@ function buildRtf(f){
       let s=bl.tpl.replace(/\{k:([a-z0-9_]+)\}/g,(m,k)=>val(k)||"…")
                   .replace(/\{c:([a-z0-9_]+)\}/g,(m,c)=>COMPUTED[c]?COMPUTED[c]():"…");
       if(bl.chk) s=`${box(bl.chk)} `+s;
-      B+=bl.b?`\\pard\\sa120{\\b\\cf2 ${resc(s)}}\\par `:`\\pard\\sa120 ${resc(s)}\\par `;
+      B+=bl.b?`\\pard\\sa120{\\cf2 ${resc(s)}}\\par `:`\\pard\\sa120 ${resc(s)}\\par `;
     }
-    else if(bl.t==="h") B+=`\\pard\\sa120{\\b\\cf2 ${resc(bl.s)}}\\par `;
+    else if(bl.t==="h") B+=`\\pard\\sa120{\\cf2 ${resc(bl.s)}}\\par `;
     else if(bl.t==="i") B+=`\\pard\\sa120{\\i\\cf2 ${resc(bl.s)}}\\par `;
     else if(bl.t==="avintro"){ B+=AV_INTRO.map(p=>`\\pard\\sa120 ${resc(p)}\\par `).join(""); }
     else if(bl.t==="avt"){ B+=rtfAvTable(brd); }
     else if(bl.t==="av"){
-      B+=`\\pard\\page\\sa120{\\b\\cf1 Algemene voorwaarden}\\par `;
+      B+=`\\pard\\page\\sa120{\\cf1 Algemene voorwaarden}\\par `;
       B+=AV_INTRO.map(p=>`\\pard\\sa100{\\fs22 ${resc(p)}}\\par `).join("");
       AV.forEach(([n,t])=>{
         const head=!n.includes(".");
-        if(head) B+=`\\trowd\\trgaph80\\clcbpat1${brd()}\\cellx800\\clcbpat1${brd()}\\cellx9072\\pard\\intbl\\sa0{\\b\\fs22\\cf4 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\b\\fs22\\cf4 ${resc(t)}}\\cell\\row `;
-        else B+=`\\trowd\\trgaph80\\clcbpat5${brd()}\\cellx800\\clcbpat7${brd()}\\cellx9072\\pard\\intbl\\sa0{\\b\\fs22\\cf2 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\fs22 ${resc(t)}}\\cell\\row `;
+        if(head) B+=`\\trowd\\trgaph80\\clcbpat1${brd()}\\cellx800\\clcbpat1${brd()}\\cellx9072\\pard\\intbl\\sa0{\\fs22\\cf4 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\fs22\\cf4 ${resc(t)}}\\cell\\row `;
+        else B+=`\\trowd\\trgaph80\\clcbpat5${brd()}\\cellx800\\clcbpat7${brd()}\\cellx9072\\pard\\intbl\\sa0{\\fs22\\cf2 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\fs22 ${resc(t)}}\\cell\\row `;
       });
     }
     else if(bl.t==="signs"){
       B+=`\\pard\\sa120\\par \\pard\\sa120 ………………………………………………………\\par `.replace(/…/g,"\\u8230?")+
-         `\\pard\\sa240 (${resc(val("ui_verzorger")||"…")})\\line Cavalli Uitvaartbegeleiding\\par `+
+         `\\pard\\sa240 ${resc(COMPUTED.vz_naam())}\\line Cavalli Uitvaartbegeleiding\\par `+
          `\\pard\\sa120\\par \\pard\\sa120 ${"\\u8230?".repeat(37)}\\par `+
-         `\\pard\\sa120 (${resc(val("og_achternaam")||"…")})\\line Namens de familie van ${resc(val("ui_naamovl")||"…")}\\par `;
+         `\\pard\\sa120 ${resc(COMPUTED.og_volnaam())}\\line ${resc(COMPUTED.familie_van())}\\par `;
     }
   });
   return head+foot+B+"}";
@@ -1142,9 +1197,9 @@ function buildTxt(f){
     else if(bl.t==="avt"){ AV.forEach(([n,t])=>L.push(n+"  "+t)); L.push(""); }
     else if(bl.t==="signs"){
       L.push(""); L.push("………………………………………………………");
-      L.push(`(${val("ui_verzorger")||"…"})`); L.push("Cavalli Uitvaartbegeleiding"); L.push("");
+      L.push(COMPUTED.vz_naam()); L.push("Cavalli Uitvaartbegeleiding"); L.push("");
       L.push("………………………………………………………");
-      L.push(`(${val("og_achternaam")||"…"})`); L.push(`Namens de familie van ${val("ui_naamovl")||"…"}`);
+      L.push(COMPUTED.og_volnaam()); L.push(COMPUTED.familie_van());
     }
   });
   L.push(""); L.push("Cavalli Uitvaartbegeleiding | Soestdijkseweg Zuid 207, 3721 AC Bilthoven | KvK 64833690");
@@ -1553,6 +1608,39 @@ pgFile.addEventListener("change",async()=>{
 });
 
 /* ============ Dossier: alles opslaan/inlezen als JSON ============ */
+/* Uitvaartbegeleider-keuze: vult naam (en telefoon) op alle formulieren */
+const BEGELEIDERS=[
+  {naam:"Amber Teunissen - Cavalli",tel:"06 - 54 77 51 92"},
+  {naam:"Lonneke van het Erve",tel:"06 - 29 05 57 54"},
+  {naam:"Hanneke Meijerink",tel:"06 - 50 64 84 26"}];
+const BEG_KEYS=["ui_verzorger","ob_begeleider","cr_begeleider","bg_begeleider"];
+function zetBegeleider(naam,tel){
+  BEG_KEYS.forEach(k=>{S[k]=naam; sync(k,null);});
+  if(tel!==undefined){S.ui_tel=tel; sync("ui_tel",null);}
+  DIRTY=true;
+}
+const begSelect=document.getElementById("begSelect"), begNaam=document.getElementById("begNaam"),
+      begStatus=document.getElementById("begStatus");
+begSelect.addEventListener("change",()=>{
+  const v=begSelect.value;
+  if(v==="anders"){
+    begNaam.value=""; zetBegeleider("","");
+    begStatus.textContent="Vul zelf de naam in; het telefoonnummer kunt u op het uitstelformulier invullen.";
+    begNaam.focus();
+  } else if(v!==""){
+    const b=BEGELEIDERS[+v];
+    begNaam.value=b.naam; zetBegeleider(b.naam,b.tel);
+    begStatus.textContent=`${b.naam} (${b.tel}) ingevuld op alle formulieren.`;
+  }
+});
+begNaam.addEventListener("input",()=>{
+  if(begSelect.value!=="anders"){
+    const idx=BEGELEIDERS.findIndex(b=>b.naam===begNaam.value);
+    if(idx===-1) begSelect.value="anders";
+  }
+  zetBegeleider(begNaam.value);
+  begStatus.textContent="Naam ingevuld op alle formulieren.";
+});
 function refreshAll(){
   document.querySelectorAll("[data-k]").forEach(el=>{
     const k=el.dataset.k;
@@ -1600,13 +1688,14 @@ document.getElementById("alleDocx").addEventListener("click",async()=>{
   jsonStatus.textContent="Bezig met samenstellen\u2026";
   try{
     const files=[];
+    const zw=document.getElementById("alleZw").checked;
     for(const f of FORMS){
       if(f.id==="hl") continue; // handleiding niet in het pakket
-      const b=buildDocx(f);
+      const b=buildDocx(f,false,zw);
       files.push({name:bestandsnaam(f)+".docx",data:new Uint8Array(await b.arrayBuffer())});
     }
     const zip=zipStore(files);
-    const bn=`Cavalli_alle_formulieren_${datumTijd()}.zip`;
+    const bn=`Cavalli_alle_formulieren_${zw?"zwart-wit":"kleur"}_${datumTijd()}.zip`;
     downloadBlob(new Blob([zip],{type:"application/zip"}),bn,jsonStatus);
     jsonStatus.textContent=`${files.length} formulieren gedownload als ${bn} (Word-bestanden in \u00e9\u00e9n zip).`;
   }catch(err){ jsonStatus.textContent="Samenstellen mislukt: "+err.message; }
