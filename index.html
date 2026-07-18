@@ -112,6 +112,7 @@
     <button class="btn" id="jsonSave" type="button">Dossier opslaan (JSON)</button>
     <label class="btn ghost" for="jsonFile" tabindex="0">Dossier inlezen (JSON)</label>
     <input type="file" id="jsonFile" accept=".json,application/json" hidden>
+    <button class="btn ghost" id="alleDocx" type="button">Alle formulieren downloaden (zip)</button>
     <span class="hint" id="jsonStatus">Slaat álle velden van alle tabbladen op in één bestand.</span>
   </div>
 </header>
@@ -138,7 +139,7 @@ Object.assign(S,{
 });
 
 /* item-shorthands: x=tekstveld, a=tekstvak, c=checkbox, s=statisch */
-const X=(k,w)=>({t:"x",k,w}), A=k=>({t:"a",k}), C=(k,s)=>({t:"c",k,s}), T=s=>({t:"s",s});
+const X=(k,w)=>({t:"x",k,w}), A=k=>({t:"a",k}), C=(k,s)=>({t:"c",k,s}), T=s=>({t:"s",s}), CV=c=>({t:"cv",c});
 const R=(l,...it)=>({l,it});
 
 /* Herbruikbare secties */
@@ -187,9 +188,8 @@ const FORMS=[
   {t:"i",s:"Op alle diensten van Cavalli Uitvaartbegeleiding zijn de algemene voorwaarden van toepassing. Deze zijn bijgesloten en zijn een onderdeel van deze opdrachtbevestiging. De algemene voorwaarden zijn ook te raadplegen op de website: https://cavalli-uitvaartbegeleiding.nl/wp-content/uploads/2022/03/algemene-voorwaarden-januari-2021.docx.pdf"},
   {t:"sec",title:"Ondertekening",rows:[
     R("Plaats van ondertekening",X("ob_plaats")),R("Datum van ondertekening",X("ob_datum")),
-    {l:"Handtekening opdrachtgever voor opdracht, ontvangst algemene voorwaarden en akkoord verklaring persoonsgegevens",it:[],sig:1},
-    R("Naam uitvaartbegeleider",X("ob_begeleider")),
-    {l:"Handtekening uitvaartbegeleider",it:[],sig:1}]},
+    {l:"Handtekening opdrachtgever voor opdracht, ontvangst algemene voorwaarden en akkoord verklaring persoonsgegevens",it:[],sig:1,nk:"ob_naam_og"},
+    {l:"Handtekening uitvaartbegeleider",it:[],sig:1,nk:"ob_begeleider"}]},
   {t:"av"}
  ]},
 
@@ -251,7 +251,7 @@ const FORMS=[
  sub:"", file:"Formulier_crematie",
  blocks:[
   {t:"sec",title:"Overledene",rows:[R("Registratienummer",X("ov_reg")),...OV_BASIS,...OV_OVL2,
-    R("Burgerlijke staat",X("ov_burgstaat")),R("Geslacht",X("ov_geslacht")),R("Leeftijd",X("ov_leeftijd"))]},
+    R("Burgerlijke staat",X("ov_burgstaat")),R("Geslacht",CV("geslacht")),R("Leeftijd",X("ov_leeftijd"))]},
   {t:"sec",title:"Opdrachtgever",rows:[...OG_BASIS,
     R("Geboortedatum",X("og_gebdatum")),R("Geboorteplaats",X("og_gebplaats")),
     R("E-mail",X("og_email")),R("Telefoonnummer",X("og_tel")),
@@ -279,7 +279,7 @@ const FORMS=[
     R("4",T("De begraafplaats of het crematorium aanvaardt geen aansprakelijkheid voor eventuele gevolgen voortvloeiend uit een onjuiste beantwoording van de gestelde vragen of het niet naleven van de voorwaarden genoemd onder punt 3."))],num:1},
   {t:"sec",title:"",rows:[R("Plaats van ondertekening",X("cr_ondplaats")),
     R("Datum van ondertekening",X("cr_onddatum")),
-    {l:"Handtekening opdrachtgever",it:[],sig:1},{l:"Handtekening uitvaartbegeleider",it:[],sig:1}]},
+    {l:"Handtekening opdrachtgever",it:[],sig:1,nk:"cr_naam_og"},{l:"Handtekening uitvaartbegeleider",it:[],sig:1,nk:"cr_begeleider"}]},
   {t:"sec",title:"Bijzonderheden dienst",rows:[
     R("Bijzonderheden dienst",C("cr_bnvt","n.v.t.")),
     R("Wilt u voor de afscheidsdienst afscheid te nemen?",C("cr_afsja","Ja"),C("cr_afsnee","Nee")),
@@ -304,19 +304,19 @@ const FORMS=[
  blocks:[
   {t:"p",tpl:"De hierna te noemen erfgena(a)m(en) c.q. begunstigde(n) draagt/dragen hierbij in eigendom over aan de mede ondergetekende Cavalli Uitvaartbegeleiding, die deze overdracht aanvaardt, zijn/haar/hun vordering(en) op de hierna te noemen verzekeraar tot uitkering van hierna te noemen verzekerd(e) bedrag(en) tot maximaal het bedrag van de uitvaartkosten, in ieder voor zijn/haar aandeel in die uitkering(en) krachtens erfrecht dan wel krachtens een in de desbetreffende polis voorkomende begunstiging."},
   {t:"p",tpl:"Cavalli Uitvaartbegeleiding doet mededeling van de bovengenoemde overdracht aan de verzekeraar."},
-  {t:"sec",title:"Verzekerde",rows:[R("Naam",X("vz_naam")),R("Adres/Postcode/Plaats",X("vz_adres")),
+  {t:"sec",title:"Verzekerde",rows:[R("Naam",CV("ov_volnaam")),R("Adres/Postcode/Plaats",X("ov_adres")),
     R("Geboortedatum",X("ov_gebdatum")),R("Datum van overlijden",X("ov_ovldatum"))]},
   {t:"sec",title:"Verzekeraar",rows:[R("Naam verzekeraar",X("vr_naam")),
     R("Polisnummers",X("vr_polis")),R("Nominaal verzekerd bedrag",X("vr_bedrag"))]},
-  {t:"sec",title:"Erfgenaam c.q. begunstigde",rows:[R("Naam",X("ef_naam")),
-    R("Adres/Postcode/Plaats",X("ef_adres")),R("Telefoonnummer",X("ef_tel")),
+  {t:"sec",title:"Erfgenaam c.q. begunstigde",rows:[R("Naam",CV("og_volnaam")),
+    R("Adres/Postcode/Plaats",X("og_adres")),R("Telefoonnummer",X("og_tel")),
     R("Plaats ondertekening",X("ef_plaats")),R("Datum ondertekening",X("ef_datum")),
-    {l:"Handtekening erfgenaam c.q. begunstigde",it:[],sig:1}]},
+    {l:"Handtekening erfgenaam c.q. begunstigde",it:[],sig:1,nk:"ac_naam_erf"}]},
   {t:"sec",title:"Cavalli Uitvaartbegeleiding",rows:[
     R("Het verzekerd bedrag graag overmaken op",T("Bankrekening NL09 ABNA 0458 2509 02 t.n.v. Cavalli Uitvaartbegeleiding te Bilthoven")),
-    R("Betaling onder vermelding van",T("Naam:"),X("ac_naam"),T("/ Registratienummer:"),X("ov_reg")),
+    R("Betaling onder vermelding van",T("Naam:"),CV("ov_volnaam"),T("/ Registratienummer:"),X("ov_reg")),
     R("",C("ac_idcheck","Ik heb het identificatiebewijs van een van de begunstigde(n) gecontroleerd en gevalideerd op juistheid en geldigheid.")),
-    {l:"Handtekening voor aanvaarding Cavalli Uitvaartbegeleiding",it:[],sig:1},
+    {l:"Handtekening voor aanvaarding Cavalli Uitvaartbegeleiding",it:[],sig:1,nk:"ac_naam_cavalli"},
     {l:"Bijlagen",stack:1,it:[C("ac_bpolis","Polis(sen)"),C("ac_bakte","Akte van overlijden"),
       C("ac_bfactuur","Eindfactuur uitvaartbegeleiding"),C("ac_bid","Kopie ID erfgenaam c.q. begunstigde")]}]}
  ]},
@@ -373,10 +373,12 @@ const FORMS=[
     R("Gedeelde gegevens",T("Gegevens van de overledene en de opdrachtgever vult u één keer in; ze worden direct automatisch overgenomen op alle andere tabbladen.")),
     R("Automatische aanhef",T("De aangekruiste keuze De heer/Mevrouw en de achternaam van de overledene vullen automatisch de openingszin van de opdrachtbevestiging.")),
     R("Aankruisvakjes",T("Keuzes zoals soort uitvaart, grafrechten of wensen bij de dienst kruist u aan; in de documenten verschijnen ze als ☒ (aangekruist) en ☐ (leeg).")),
-    R("Handtekeningen",T("Handtekeningvelden blijven leeg in de documenten; daar wordt op papier getekend."))]},
+    R("Handtekeningen",T("Bij elke handtekening staat een veld om de naam in te vullen; de handtekening zelf wordt op papier gezet.")),
+    R("Automatisch gekoppeld",T("Geslacht volgt de aanhef (De heer = man, Mevrouw = vrouw). Op de akte van cessie worden de verzekerde (= overledene) en de erfgenaam (= opdrachtgever) automatisch overgenomen, inclusief adres."))]},
   {t:"sec",title:"Opslaan en downloaden",rows:[
     R("Bestandsformaat kiezen",T("Kies in het uitklapmenu: .docx (aanbevolen, ook voor Google Docs en Google Drive), .doc (oudere Word-versies), .odt (LibreOffice/OpenOffice), .rtf (universeel), .txt (platte tekst) of .dotx (Word-sjabloon). Klik daarna op Opslaan.")),
-    R("Bestandsnaam",T("De naam wordt automatisch voornaam_achternaam_datum_formulier. Het voorwaardendocument en deze handleiding krijgen een eigen naam met datum.")),
+    R("Bestandsnaam",T("De naam wordt automatisch voornaam_achternaam_datum_formulier. Het dossier (JSON) krijgt datum \u00e9n tijd in de naam; PDF's eindigen op _kleur of _zwart-wit.")),
+    R("Alles in \u00e9\u00e9n keer",T("De knop 'Alle formulieren downloaden (zip)' bovenaan levert alle formulieren en de algemene voorwaarden als Word-bestanden in \u00e9\u00e9n zip.")),
     R("Downloaden als PDF",T("Opent het afdrukvenster in een nieuw venster; kies daar 'Opslaan als PDF'. Sta hiervoor pop-ups toe.")),
     R("Zuinig printen",T("Vink 'Zuinig printen' aan voor een zwart-witversie waarin alleen het logo in kleur blijft — bespaart inkt bij het printen.")),
     R("Huisstijl",T("Alle documenten krijgen automatisch het Cavalli-logo, de huisstijlkleuren en de voettekst met paginanummering."))]},
@@ -469,11 +471,12 @@ function itemHTML(it){
   if(it.t==="a") return `<textarea data-k="${it.k}" rows="2"></textarea>`;
   if(it.t==="c") return `<label class="chk"><input type="checkbox" data-k="${it.k}">${esc(it.s)}</label>`;
   if(it.t==="s") return `<span class="stat">${esc(it.s)}</span>`;
+  if(it.t==="cv") return `<span class="cval" data-c="${it.c}"></span>`;
   return "";
 }
 function rowHTML(r){
   let inner;
-  if(r.sig) inner=`<div class="sig" aria-hidden="true"></div><span class="hint">handtekening op papier</span>`;
+  if(r.sig) inner=(r.nk?`<div>Naam: <input type="text" class="inline" data-k="${r.nk}"></div>`:"")+`<div class="sig" aria-hidden="true"></div><span class="hint">handtekening op papier</span>`;
   else if(r.it.length===1 && r.it[0].t==="x") inner=`<input type="text" data-k="${r.it[0].k}">`;
   else if(r.it.length===1 && r.it[0].t==="a") inner=`<textarea data-k="${r.it[0].k}" rows="2"></textarea>`;
   else if(r.stack) inner=r.it.map(itemHTML).map(h=>`<div style="margin:2px 0">${h}</div>`).join("");
@@ -486,6 +489,18 @@ const COMPUTED={
     const h=!!S.ov_heer, m=!!S.ov_mevrouw;
     const aanhef=h&&!m?"de heer":m&&!h?"mevrouw":"de heer / mevrouw";
     return aanhef+" "+(val("ov_achternaam")||"…");
+  },
+  ov_volnaam(){
+    const n=((val("ov_voornamen")||val("ov_roepnaam"))+" "+val("ov_achternaam")).trim();
+    return n||"…";
+  },
+  og_volnaam(){
+    const n=((val("og_voornamen")||val("og_roepnaam"))+" "+val("og_achternaam")).trim();
+    return n||"…";
+  },
+  geslacht(){
+    const h=!!S.ov_heer, m=!!S.ov_mevrouw;
+    return h&&!m?"man":m&&!h?"vrouw":"…";
   }
 };
 function updateComputed(){
@@ -624,12 +639,13 @@ function itemDoc(it){
   if(it.t==="a") return esc(val(it.k)).replace(/\n/g,"<br>");
   if(it.t==="c") return `${box(it.k)} ${esc(it.s)}`;
   if(it.t==="s") return esc(it.s);
+  if(it.t==="cv") return esc(COMPUTED[it.c]?COMPUTED[it.c]():"");
   return "";
 }
 function rowDoc(r,i){
   const bg=i%2===0?"#F2F1EA":"#EAE8DC";
   let inner;
-  if(r.sig) inner=`<p style="margin:0">&nbsp;</p><p style="margin:0">&nbsp;</p>`;
+  if(r.sig) inner=(r.nk?`<p style="margin:0 0 4pt 0">Naam: ${esc(val(r.nk))}</p>`:"")+`<p style="margin:0">&nbsp;</p><p style="margin:0">&nbsp;</p>`;
   else if(r.stack) inner=r.it.map(itemDoc).filter(Boolean).map(h=>`<p style="margin:0">${h}</p>`).join("");
   else inner=r.it.map(itemDoc).filter(Boolean).join(" ")||"&nbsp;";
   return `<tr><td class="lbl" style="background:${bg}">${esc(r.l)||"&nbsp;"}</td><td class="inv">${inner}</td></tr>`;
@@ -687,10 +703,10 @@ p.ttl2 {font-size:11pt; font-weight:bold; color:#959369;
   border-bottom:0.75pt solid #959369; padding-bottom:3pt; margin:0 0 8pt 0;}
 p.sub {text-align:center; color:#6E6C4B; margin:0 0 10pt 0;}
 p.b {font-weight:bold; color:#6E6C4B;}
-p.noot {color:#6E6C4B; font-size:10pt;}
-p.klein, td.klein {font-size:10pt;}
+p.noot {color:#6E6C4B; font-size:11pt;}
+p.klein, td.klein {font-size:11pt;}
 table {border-collapse:collapse; width:100%; margin:0 0 8pt 0;}
-td {border:0.5pt solid #D9D7C8; padding:2.5pt 6pt; font-size:10.5pt; vertical-align:top;}
+td {border:0.5pt solid #D9D7C8; padding:2.5pt 6pt; font-size:11pt; vertical-align:top;}
 td.sec {background:#959369; color:#FFFFFF; font-weight:bold; font-size:11pt;}
 td.lbl {width:42%; font-weight:bold; color:#6E6C4B;}
 td.inv {background:#FAFAF7;}
@@ -735,6 +751,7 @@ function itemTxt(it){
   if(it.t==="a") return val(it.k);
   if(it.t==="c") return `${box(it.k)} ${it.s}`;
   if(it.t==="s") return it.s;
+  if(it.t==="cv") return COMPUTED[it.c]?COMPUTED[it.c]():"";
   return "";
 }
 const LOGO_DRAW=`<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="952500" cy="592383"/><wp:docPr id="1" name="Logo Cavalli"/><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="1" name="logo.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="rId1"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="952500" cy="592383"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`;
@@ -744,7 +761,7 @@ function secXml(bl){
   bl.rows.forEach((r,i)=>{
     const zeb=i%2===0?"F2F1EA":"EAE8DC";
     let valXml;
-    if(r.sig) valXml=par("",{after:0})+par("",{after:0})+par("",{after:0});
+    if(r.sig) valXml=(r.nk?par(run("Naam: "+val(r.nk)),{after:60}):"")+par("",{after:0})+par("",{after:0})+par("",{after:0});
     else if(r.stack) valXml=(r.it.map(itemTxt).filter(Boolean).map(t=>par(run(t),{after:0})).join(""))||par("",{after:0});
     else{
       const t=r.it.map(itemTxt).filter(Boolean).join("   ");
@@ -758,8 +775,8 @@ function avTableXml(){
   let rows="";
   AV.forEach(([n,t])=>{
     const head=!n.includes(".");
-    if(head) rows+=`<w:tr>${tc(par(run(n,{b:1,color:"FFFFFF",sz:20}),{after:0}),{w:800,fill:"959369"})}${tc(par(run(t,{b:1,color:"FFFFFF",sz:20}),{after:0}),{w:8272,fill:"959369"})}</w:tr>`;
-    else rows+=`<w:tr>${tc(par(run(n,{b:1,color:"6E6C4B",sz:20}),{after:0}),{w:800,fill:"F2F1EA"})}${tc(par(run(t,{sz:20}),{after:0}),{w:8272,fill:"FAFAF7"})}</w:tr>`;
+    if(head) rows+=`<w:tr>${tc(par(run(n,{b:1,color:"FFFFFF"}),{after:0}),{w:800,fill:"959369"})}${tc(par(run(t,{b:1,color:"FFFFFF"}),{after:0}),{w:8272,fill:"959369"})}</w:tr>`;
+    else rows+=`<w:tr>${tc(par(run(n,{b:1,color:"6E6C4B"}),{after:0}),{w:800,fill:"F2F1EA"})}${tc(par(run(t),{after:0}),{w:8272,fill:"FAFAF7"})}</w:tr>`;
   });
   return tbl(rows,[800,8272]);
 }
@@ -777,10 +794,10 @@ function docBodyXml(f){
       B+=par(run(s,bl.b?{b:1,color:"6E6C4B"}:{}),{});
     }
     else if(bl.t==="h") B+=par(run(bl.s,{b:1,color:"6E6C4B"}),{});
-    else if(bl.t==="i") B+=par(run(bl.s,{i:1,color:"6E6C4B",sz:20}),{});
+    else if(bl.t==="i") B+=par(run(bl.s,{i:1,color:"6E6C4B"}),{});
     else if(bl.t==="av"){
       B+=par(run("Algemene voorwaarden",{b:1,color:"959369"}),{pb:1,border:{sz:6,color:"959369"},after:120});
-      B+=AV_INTRO.map(p=>par(run(p,{sz:20}),{after:100})).join("");
+      B+=AV_INTRO.map(p=>par(run(p),{after:100})).join("");
       B+=avTableXml();
     }
     else if(bl.t==="avintro") B+=AV_INTRO.map(p=>par(run(p),{after:120})).join("");
@@ -843,6 +860,10 @@ function buildDocx(f,template){
   ]);
 }
 /* Bestandsnaam: voornaam_achternaam_datum_formulier */
+function datumTijd(){
+  const d=new Date(),pad=n=>String(n).padStart(2,"0");
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}`;
+}
 function bestandsnaam(f){
   const d=new Date(),pad=n=>String(n).padStart(2,"0");
   const datum=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
@@ -920,7 +941,7 @@ function odtBody(f){
       bl.rows.forEach((r,i)=>{
         const zs=i%2===0?"CZ1":"CZ2";
         let vp;
-        if(r.sig) vp=odtP("","PC")+odtP("","PC")+odtP("","PC");
+        if(r.sig) vp=(r.nk?odtP("Naam: "+val(r.nk),"PC"):"")+odtP("","PC")+odtP("","PC")+odtP("","PC");
         else if(r.stack) vp=(r.it.map(itemTxt).filter(Boolean).map(t=>odtP(t,"PC")).join(""))||odtP("","PC");
         else vp=odtP(r.it.map(itemTxt).filter(Boolean).join("   "),"PC");
         rows+=`<table:table-row>${odtCell(odtP(r.l||"","PC","TB"),zs)}${odtCell(vp,"CV")}</table:table-row>`;
@@ -975,11 +996,11 @@ function buildOdt(f){
 <style:style style:name="PBT" style:family="paragraph"><style:paragraph-properties fo:break-before="page" fo:margin-bottom="0.2cm" fo:border-bottom="0.026cm solid #959369" fo:padding-bottom="0.08cm"/></style:style>
 <style:style style:name="Ttl" style:family="text"><style:text-properties fo:font-weight="bold" fo:color="#959369" fo:font-size="13pt"/></style:style>
 <style:style style:name="TB" style:family="text"><style:text-properties fo:font-weight="bold" fo:color="#6E6C4B"/></style:style>
-<style:style style:name="TBs" style:family="text"><style:text-properties fo:font-weight="bold" fo:color="#6E6C4B" fo:font-size="10pt"/></style:style>
+<style:style style:name="TBs" style:family="text"><style:text-properties fo:font-weight="bold" fo:color="#6E6C4B" fo:font-size="11pt"/></style:style>
 <style:style style:name="TW" style:family="text"><style:text-properties fo:font-weight="bold" fo:color="#FFFFFF"/></style:style>
-<style:style style:name="TWs" style:family="text"><style:text-properties fo:font-weight="bold" fo:color="#FFFFFF" fo:font-size="10pt"/></style:style>
+<style:style style:name="TWs" style:family="text"><style:text-properties fo:font-weight="bold" fo:color="#FFFFFF" fo:font-size="11pt"/></style:style>
 <style:style style:name="TI" style:family="text"><style:text-properties fo:font-style="italic" fo:color="#6E6C4B"/></style:style>
-<style:style style:name="TS" style:family="text"><style:text-properties fo:font-size="10pt"/></style:style>
+<style:style style:name="TS" style:family="text"><style:text-properties fo:font-size="11pt"/></style:style>
 </office:automatic-styles>
 <office:body><office:text>${odtBody(f)}</office:text></office:body></office:document-content>`;
   const stylesXml=`<?xml version="1.0" encoding="UTF-8"?>
@@ -1018,8 +1039,8 @@ function rtfAvTable(brd){
   let B="";
   AV.forEach(([n,t])=>{
     const head=!n.includes(".");
-    if(head) B+=`\\trowd\\trgaph80\\clcbpat1${brd()}\\cellx800\\clcbpat1${brd()}\\cellx9072\\pard\\intbl\\sa0{\\b\\fs20\\cf4 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\b\\fs20\\cf4 ${resc(t)}}\\cell\\row `;
-    else B+=`\\trowd\\trgaph80\\clcbpat5${brd()}\\cellx800\\clcbpat7${brd()}\\cellx9072\\pard\\intbl\\sa0{\\b\\fs20\\cf2 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\fs20 ${resc(t)}}\\cell\\row `;
+    if(head) B+=`\\trowd\\trgaph80\\clcbpat1${brd()}\\cellx800\\clcbpat1${brd()}\\cellx9072\\pard\\intbl\\sa0{\\b\\fs22\\cf4 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\b\\fs22\\cf4 ${resc(t)}}\\cell\\row `;
+    else B+=`\\trowd\\trgaph80\\clcbpat5${brd()}\\cellx800\\clcbpat7${brd()}\\cellx9072\\pard\\intbl\\sa0{\\b\\fs22\\cf2 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\fs22 ${resc(t)}}\\cell\\row `;
   });
   return B;
 }
@@ -1043,7 +1064,7 @@ function buildRtf(f){
       bl.rows.forEach((r,i)=>{
         const zeb=i%2===0?5:6;
         let v;
-        if(r.sig) v="\\line \\line ";
+        if(r.sig) v=(r.nk?("Naam: "+resc(val(r.nk))+"\\line "):"")+"\\line \\line ";
         else if(r.stack) v=r.it.map(itemTxt).filter(Boolean).map(resc).join("\\line ");
         else v=resc(r.it.map(itemTxt).filter(Boolean).join("   "));
         B+=`\\trowd\\trgaph80\\clcbpat${zeb}${brd()}\\cellx3810\\clcbpat7${brd()}\\cellx9072`+
@@ -1063,11 +1084,11 @@ function buildRtf(f){
     else if(bl.t==="avt"){ B+=rtfAvTable(brd); }
     else if(bl.t==="av"){
       B+=`\\pard\\page\\sa120{\\b\\cf1 Algemene voorwaarden}\\par `;
-      B+=AV_INTRO.map(p=>`\\pard\\sa100{\\fs20 ${resc(p)}}\\par `).join("");
+      B+=AV_INTRO.map(p=>`\\pard\\sa100{\\fs22 ${resc(p)}}\\par `).join("");
       AV.forEach(([n,t])=>{
         const head=!n.includes(".");
-        if(head) B+=`\\trowd\\trgaph80\\clcbpat1${brd()}\\cellx800\\clcbpat1${brd()}\\cellx9072\\pard\\intbl\\sa0{\\b\\fs20\\cf4 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\b\\fs20\\cf4 ${resc(t)}}\\cell\\row `;
-        else B+=`\\trowd\\trgaph80\\clcbpat5${brd()}\\cellx800\\clcbpat7${brd()}\\cellx9072\\pard\\intbl\\sa0{\\b\\fs20\\cf2 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\fs20 ${resc(t)}}\\cell\\row `;
+        if(head) B+=`\\trowd\\trgaph80\\clcbpat1${brd()}\\cellx800\\clcbpat1${brd()}\\cellx9072\\pard\\intbl\\sa0{\\b\\fs22\\cf4 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\b\\fs22\\cf4 ${resc(t)}}\\cell\\row `;
+        else B+=`\\trowd\\trgaph80\\clcbpat5${brd()}\\cellx800\\clcbpat7${brd()}\\cellx9072\\pard\\intbl\\sa0{\\b\\fs22\\cf2 ${resc(n)}}\\cell\\pard\\intbl\\sa0{\\fs22 ${resc(t)}}\\cell\\row `;
       });
     }
     else if(bl.t==="signs"){
@@ -1090,13 +1111,14 @@ function buildTxt(f){
     if(it.t==="x"||it.t==="a") return val(it.k);
     if(it.t==="c") return `${boxT(it.k)} ${it.s}`;
     if(it.t==="s") return it.s;
+    if(it.t==="cv") return COMPUTED[it.c]?COMPUTED[it.c]():"";
     return "";
   };
   f.blocks.forEach(bl=>{
     if(bl.t==="sec"){
       if(bl.title) L.push("=== "+bl.title+" ===");
       bl.rows.forEach(r=>{
-        if(r.sig){ L.push((r.l||"")+": ______________________________"); return; }
+        if(r.sig){ L.push((r.l||"")+": "+(r.nk&&val(r.nk)?("Naam: "+val(r.nk)+"  "):"")+"______________________________"); return; }
         const v=r.it.map(itemT).filter(Boolean).join("   ");
         L.push((r.l?r.l+": ":"")+v);
       });
@@ -1181,7 +1203,7 @@ footer{color:#000;border-top-color:#000}
 `;
 function buildPdfHtml(f,zuinig){
   const body=docBody(f).replace("%%LOGO%%",`<img src="${LOGO}" width="100" alt="Cavalli Uitvaartbegeleiding">`);
-  return `<!DOCTYPE html><html lang="nl"><head><meta charset="utf-8"><title>${esc(bestandsnaam(f))}${zuinig?"_zuinig":""}</title>
+  return `<!DOCTYPE html><html lang="nl"><head><meta charset="utf-8"><title>${esc(bestandsnaam(f))}${zuinig?"_zwart-wit":"_kleur"}</title>
 <style>${DOC_CSS}
 body{margin:0;padding:24px 8mm;background:#fff}
 @page{size:A4;margin:14mm}
@@ -1546,9 +1568,10 @@ document.getElementById("jsonSave").addEventListener("click",()=>{
     opgeslagen:new Date().toISOString(),velden};
   const naam=(val("ov_achternaam")||"dossier").replace(/[^\w-]+/g,"_");
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-  downloadBlob(blob,`Cavalli_${naam}.json`,jsonStatus);
+  const bn=`Cavalli_${naam}_${datumTijd()}.json`;
+  downloadBlob(blob,bn,jsonStatus);
   DIRTY=false;
-  jsonStatus.textContent=`Dossier opgeslagen als Cavalli_${naam}.json (${Object.keys(velden).length} velden).`;
+  jsonStatus.textContent=`Dossier opgeslagen als ${bn} (${Object.keys(velden).length} velden).`;
 });
 const jsonFile=document.getElementById("jsonFile");
 document.querySelector('label[for="jsonFile"]').addEventListener("keydown",ev=>{
@@ -1572,6 +1595,21 @@ jsonFile.addEventListener("change",async()=>{
     jsonStatus.textContent=`Dossier ingelezen uit ${file.name} (${n} velden). Alle tabbladen zijn bijgewerkt.`;
   }catch(err){ jsonStatus.textContent="Inlezen mislukt: "+err.message; }
   jsonFile.value="";
+});
+document.getElementById("alleDocx").addEventListener("click",async()=>{
+  jsonStatus.textContent="Bezig met samenstellen\u2026";
+  try{
+    const files=[];
+    for(const f of FORMS){
+      if(f.id==="hl") continue; // handleiding niet in het pakket
+      const b=buildDocx(f);
+      files.push({name:bestandsnaam(f)+".docx",data:new Uint8Array(await b.arrayBuffer())});
+    }
+    const zip=zipStore(files);
+    const bn=`Cavalli_alle_formulieren_${datumTijd()}.zip`;
+    downloadBlob(new Blob([zip],{type:"application/zip"}),bn,jsonStatus);
+    jsonStatus.textContent=`${files.length} formulieren gedownload als ${bn} (Word-bestanden in \u00e9\u00e9n zip).`;
+  }catch(err){ jsonStatus.textContent="Samenstellen mislukt: "+err.message; }
 });
 </script>
 </body>
