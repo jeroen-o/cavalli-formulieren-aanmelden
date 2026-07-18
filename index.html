@@ -107,7 +107,7 @@
 </head>
 <body>
 <header class="app">
-  <p class="sub">Gedeelde gegevens (overledene &amp; opdrachtgever) worden automatisch overgenomen op alle tabbladen. Gegevens blijven alleen in dit venster bewaard en verdwijnen bij verversen.</p>
+  <p class="sub">Gedeelde gegevens (overledene &amp; opdrachtgever) worden automatisch overgenomen op alle tabbladen. Gegevens blijven alleen in dit venster bewaard; bij sluiten of verversen met niet-opgeslagen wijzigingen vraagt de browser eerst om bevestiging.</p>
   <div class="dossier">
     <button class="btn" id="jsonSave" type="button">Dossier opslaan (JSON)</button>
     <label class="btn ghost" for="jsonFile" tabindex="0">Dossier inlezen (JSON)</label>
@@ -362,6 +362,33 @@ const FORMS=[
   {t:"gids"},
   {t:"avintro"},
   {t:"avt"}
+ ]},
+
+/* --- 10. Handleiding --- */
+{id:"hl", tab:"Handleiding", title:"Handleiding",
+ sub:"Zo werkt de formulierentool van Cavalli Uitvaartbegeleiding", file:"Handleiding",
+ blocks:[
+  {t:"sec",title:"Formulieren invullen",rows:[
+    R("Tabbladen",T("Elk formulier heeft een eigen tabblad: Persoonsgegevens, Opdrachtbevestiging, Aangifte, Begrafenis, Crematie, Akte van cessie, Uitstel begraven, Registratienummer en Algemene voorwaarden. Begin bij Persoonsgegevens.")),
+    R("Gedeelde gegevens",T("Gegevens van de overledene en de opdrachtgever vult u één keer in; ze worden direct automatisch overgenomen op alle andere tabbladen.")),
+    R("Automatische aanhef",T("De aangekruiste keuze De heer/Mevrouw en de achternaam van de overledene vullen automatisch de openingszin van de opdrachtbevestiging.")),
+    R("Aankruisvakjes",T("Keuzes zoals soort uitvaart, grafrechten of wensen bij de dienst kruist u aan; in de documenten verschijnen ze als ☒ (aangekruist) en ☐ (leeg).")),
+    R("Handtekeningen",T("Handtekeningvelden blijven leeg in de documenten; daar wordt op papier getekend."))]},
+  {t:"sec",title:"Opslaan en downloaden",rows:[
+    R("Bestandsformaat kiezen",T("Kies in het uitklapmenu: .docx (aanbevolen, ook voor Google Docs en Google Drive), .doc (oudere Word-versies), .odt (LibreOffice/OpenOffice), .rtf (universeel), .txt (platte tekst) of .dotx (Word-sjabloon). Klik daarna op Opslaan.")),
+    R("Bestandsnaam",T("De naam wordt automatisch voornaam_achternaam_datum_formulier. Het voorwaardendocument en deze handleiding krijgen een eigen naam met datum.")),
+    R("Downloaden als PDF",T("Opent het afdrukvenster in een nieuw venster; kies daar 'Opslaan als PDF'. Sta hiervoor pop-ups toe.")),
+    R("Zuinig printen",T("Vink 'Zuinig printen' aan voor een zwart-witversie waarin alleen het logo in kleur blijft — bespaart inkt bij het printen.")),
+    R("Huisstijl",T("Alle documenten krijgen automatisch het Cavalli-logo, de huisstijlkleuren en de voettekst met paginanummering."))]},
+  {t:"sec",title:"Inlezen en dossier",rows:[
+    R("Word of PDF inlezen",T("Op het tabblad Persoonsgegevens leest u een eerder ingevuld formulier in (.docx of een tekst-PDF); alle herkende velden worden automatisch gevuld op alle tabbladen. Gescande PDF's (foto's van papier) werken niet.")),
+    R("Dossier opslaan (JSON)",T("De knop bovenaan bewaart in één keer álle ingevulde velden en vinkjes van alle tabbladen in één dossierbestand.")),
+    R("Dossier inlezen (JSON)",T("Zet een bewaard dossier volledig terug. Let op: de huidige invulling wordt daarbij vervangen.")),
+    R("Belangrijk",T("De tool bewaart zelf niets: bij het verversen of sluiten van het venster verdwijnen alle gegevens. Zijn er niet-opgeslagen wijzigingen, dan vraagt de browser eerst om bevestiging. Sla dus eerst het dossier of de documenten op."))]},
+  {t:"sec",title:"Algemene voorwaarden",rows:[
+    R("Verstrekken",T("Geef de voorwaarden altijd daadwerkelijk mee — op papier of als PDF-bijlage — vóór het ondertekenen. Alleen verwijzen naar de website is juridisch niet voldoende (terhandstellingsplicht).")),
+    R("Downloaden",T("Via het tabblad Algemene voorwaarden downloadt u het volledige voorwaardendocument in kleur of zwart-wit, in elk gewenst bestandsformaat."))]},
+  {t:"i",s:"Vragen of aanpassingen? Neem contact op via info@cavalli-uitvaartbegeleiding.nl of 030 - 227 07 40."}
  ]}
 ];
 
@@ -567,13 +594,17 @@ function show(id){
 }
 
 /* Waarden binden + synchroniseren over tabbladen heen */
+let DIRTY=false; // zijn er niet-opgeslagen wijzigingen?
+window.addEventListener("beforeunload",e=>{
+  if(DIRTY){ e.preventDefault(); e.returnValue=""; }
+});
 function bindAll(){
   document.querySelectorAll("[data-k]").forEach(el=>{
     const k=el.dataset.k;
     if(el.type==="checkbox"){ el.checked=!!S[k];
-      el.addEventListener("change",()=>{S[k]=el.checked; sync(k,el);});
+      el.addEventListener("change",()=>{S[k]=el.checked; DIRTY=true; sync(k,el);});
     } else { if(S[k]!=null) el.value=S[k];
-      el.addEventListener("input",()=>{S[k]=el.value; sync(k,el);});
+      el.addEventListener("input",()=>{S[k]=el.value; DIRTY=true; sync(k,el);});
     }
   });
 }
@@ -816,6 +847,7 @@ function bestandsnaam(f){
   const d=new Date(),pad=n=>String(n).padStart(2,"0");
   const datum=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
   if(f.id==="avd") return `Cavalli_Algemene_voorwaarden_${datum}`;
+  if(f.id==="hl") return `Cavalli_Handleiding_${datum}`;
   const vn=val("ov_voornamen").split(/\s+/)[0]||val("ov_roepnaam");
   const delen=[vn,val("ov_achternaam"),datum,f.tab].filter(Boolean).join("_");
   return delen.replace(/[^\w\-\u00C0-\u017F]+/g,"_");
@@ -1476,6 +1508,7 @@ pgFile.addEventListener("change",async()=>{
     if(u8[0]===0x25&&u8[1]===0x50&&u8[2]===0x44&&u8[3]===0x46){ // %PDF
       const tokens=await pdfExtractTokens(buf);
       const n=applyPdfTokens(tokens);
+      if(n) DIRTY=true;
       pgStatus.textContent=n
         ? `${n} veld(en) ingevuld uit ${file.name}. Controleer de gegevens; alle tabbladen zijn bijgewerkt.`
         : "Geen herkenbare velden gevonden in de PDF. Controleer of dit het formulier persoonsgegevens is.";
@@ -1489,6 +1522,7 @@ pgFile.addEventListener("change",async()=>{
       rows=rowsFromHtml(new TextDecoder().decode(buf));
     }
     const n=applyRows(rows);
+    if(n) DIRTY=true;
     pgStatus.textContent=n
       ? `${n} veld(en) ingevuld uit ${file.name}. Controleer de gegevens; alle tabbladen zijn bijgewerkt.`
       : "Geen herkenbare velden gevonden. Controleer of dit het formulier persoonsgegevens is.";
@@ -1513,6 +1547,7 @@ document.getElementById("jsonSave").addEventListener("click",()=>{
   const naam=(val("ov_achternaam")||"dossier").replace(/[^\w-]+/g,"_");
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
   downloadBlob(blob,`Cavalli_${naam}.json`,jsonStatus);
+  DIRTY=false;
   jsonStatus.textContent=`Dossier opgeslagen als Cavalli_${naam}.json (${Object.keys(velden).length} velden).`;
 });
 const jsonFile=document.getElementById("jsonFile");
@@ -1533,6 +1568,7 @@ jsonFile.addEventListener("change",async()=>{
       if(typeof v==="string"||typeof v==="boolean"){S[k]=v;n++;}
     });
     refreshAll();
+    DIRTY=false;
     jsonStatus.textContent=`Dossier ingelezen uit ${file.name} (${n} velden). Alle tabbladen zijn bijgewerkt.`;
   }catch(err){ jsonStatus.textContent="Inlezen mislukt: "+err.message; }
   jsonFile.value="";
