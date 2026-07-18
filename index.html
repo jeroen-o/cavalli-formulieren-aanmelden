@@ -208,7 +208,7 @@ const FORMS=[
   {t:"i",s:"Op alle diensten van Cavalli Uitvaartbegeleiding zijn de algemene voorwaarden van toepassing. Deze zijn bijgesloten en zijn een onderdeel van deze opdrachtbevestiging. De algemene voorwaarden zijn ook te raadplegen op de website: https://cavalli-uitvaartbegeleiding.nl/wp-content/uploads/2022/03/algemene-voorwaarden-januari-2021.docx.pdf"},
   {t:"sec",title:"Ondertekening",rows:[
     R("Plaats van ondertekening",X("ob_plaats")),R("Datum van ondertekening",X("ob_datum")),
-    {l:"Handtekening opdrachtgever voor opdracht, ontvangst algemene voorwaarden en akkoord verklaring persoonsgegevens",it:[],sig:1,nk:"ob_naam_og"},
+    {l:"Handtekening opdrachtgever voor opdracht, ontvangst algemene voorwaarden en akkoord verklaring persoonsgegevens",it:[],sig:1,nc:"og_volnaam"},
     {l:"Handtekening uitvaartbegeleider",it:[],sig:1,nk:"ob_begeleider"}]},
   {t:"av"}
  ]},
@@ -222,9 +222,9 @@ const FORMS=[
     R("BSN",X("ov_bsn")),R("Burgerlijke staat",X("ov_burgstaat")),
     R("Ouders in leven?",X("ov_ouders")),R("Naam en adres ouders",A("ov_oudersnaamadres")),
     R("Tijdstip overlijden",X("ov_tijdstip"))]},
-  {t:"sec",title:"Naasten",rows:[R("Achternaam",X("na_achternaam")),R("Voornamen",X("na_voornamen")),
-    R("Roepnaam",X("na_roepnaam")),R("Adres/Postcode/Plaats",X("na_adres")),
-    R("Relatie tot overledene",X("na_relatie"))]},
+  {t:"sec",title:"Opdrachtgever",rows:[R("Achternaam",X("og_achternaam")),R("Voornamen",X("og_voornamen")),
+    R("Roepnaam",X("og_roepnaam")),R("Adres/Postcode/Plaats",X("og_adres")),
+    R("Relatie tot overledene",X("og_relatie"))]},
   {t:"sec",title:"Uitvaart",rows:[R("Dag",X("aa_dag")),R("Tijd",X("aa_tijd")),R("Plaats",X("aa_uplaats")),
     R("Soort uitvaart",C("aa_crem","Cremeren"),C("aa_begr","Begraven"))]},
   {t:"sec",title:"Aangever",rows:[R("Naam",X("ag_naam")),R("Geboortedatum",X("ag_gebdatum")),
@@ -240,8 +240,8 @@ const FORMS=[
  sub:"", file:"Formulier_begrafenis",
  blocks:[
   {t:"sec",title:"Overledene",rows:[R("Registratienummer",X("ov_reg")),...OV_BASIS,...OV_OVL2]},
-  {t:"sec",title:"Rechthebbende",rows:[R("Naam",X("rh_naam")),R("Voornamen",X("rh_voornamen")),
-    R("Adres/Postcode/Plaats",X("rh_adres"))]},
+  {t:"sec",title:"Rechthebbende",rows:[R("Naam",X("og_achternaam")),R("Voornamen",X("og_voornamen")),
+    R("Adres/Postcode/Plaats",X("og_adres"))]},
   {t:"sec",title:"Begraven",rows:[R("Begraafplaats",X("bg_plaats")),
     R("Adres/Postcode/Plaats begraafplaats",X("bg_adres")),R("Datum",X("bg_datum")),R("Tijd",X("bg_tijd"))]},
   {t:"sec",title:"Graf",rows:[R("Grafnummer",X("bg_grafnr")),
@@ -299,7 +299,7 @@ const FORMS=[
     R("4",T("De begraafplaats of het crematorium aanvaardt geen aansprakelijkheid voor eventuele gevolgen voortvloeiend uit een onjuiste beantwoording van de gestelde vragen of het niet naleven van de voorwaarden genoemd onder punt 3."))],num:1},
   {t:"sec",title:"",rows:[R("Plaats van ondertekening",X("cr_ondplaats")),
     R("Datum van ondertekening",X("cr_onddatum")),
-    {l:"Handtekening opdrachtgever",it:[],sig:1,nk:"cr_naam_og"},{l:"Handtekening uitvaartbegeleider",it:[],sig:1,nk:"cr_begeleider"}]},
+    {l:"Handtekening opdrachtgever",it:[],sig:1,nc:"og_volnaam"},{l:"Handtekening uitvaartbegeleider",it:[],sig:1,nk:"cr_begeleider"}]},
   {t:"sec",title:"Bijzonderheden dienst",rows:[
     R("Bijzonderheden dienst",C("cr_bnvt","n.v.t.")),
     R("Wilt u voor de afscheidsdienst afscheid te nemen?",C("cr_afsja","Ja"),C("cr_afsnee","Nee")),
@@ -331,12 +331,12 @@ const FORMS=[
   {t:"sec",title:"Erfgenaam c.q. begunstigde",rows:[R("Naam",CV("og_volnaam")),
     R("Adres/Postcode/Plaats",X("og_adres")),R("Telefoonnummer",X("og_tel")),
     R("Plaats ondertekening",X("ef_plaats")),R("Datum ondertekening",X("ef_datum")),
-    {l:"Handtekening erfgenaam c.q. begunstigde",it:[],sig:1,nk:"ac_naam_erf"}]},
+    {l:"Handtekening erfgenaam c.q. begunstigde",it:[],sig:1}]},
   {t:"sec",title:"Cavalli Uitvaartbegeleiding",rows:[
     R("Het verzekerd bedrag graag overmaken op",T("Bankrekening NL09 ABNA 0458 2509 02 t.n.v. Cavalli Uitvaartbegeleiding te Bilthoven")),
     R("Betaling onder vermelding van",T("Naam:"),CV("ov_volnaam"),T("/ Registratienummer:"),X("ov_reg")),
     R("",C("ac_idcheck","Ik heb het identificatiebewijs van een van de begunstigde(n) gecontroleerd en gevalideerd op juistheid en geldigheid.")),
-    {l:"Handtekening voor aanvaarding Cavalli Uitvaartbegeleiding",it:[],sig:1,nk:"ac_naam_cavalli"},
+    {l:"Handtekening voor aanvaarding Cavalli Uitvaartbegeleiding",it:[],sig:1,nc:"vz_naam_tel"},
     {l:"Bijlagen",stack:1,it:[C("ac_bpolis","Polis(sen)"),C("ac_bakte","Akte van overlijden"),
       C("ac_bfactuur","Eindfactuur uitvaartbegeleiding"),C("ac_bid","Kopie ID erfgenaam c.q. begunstigde")]}]}
  ]},
@@ -355,7 +355,7 @@ const FORMS=[
   {t:"sec",title:"",rows:[R("Naam",CV("og_volnaam")),R("Adres",X("og_adres")),
     R("Telefoonnummer",X("og_tel")),R("E-mailadres",X("og_email"))]},
   {t:"h",s:"Verklaren hierbij gezamenlijk:"},
-  {t:"p",tpl:"Dat zij uitstel wensen van de wettelijke termijn voor begraven/cremeren van {k:ui_naamovl}, geboren op {k:ov_gebdatum} overleden op {k:ov_ovldatum} te {k:ov_ovlplaats}."},
+  {t:"p",tpl:"Dat zij uitstel wensen van de wettelijke termijn voor begraven/cremeren van {c:aanhefnaam}, geboren op {k:ov_gebdatum} overleden op {k:ov_ovldatum} te {k:ov_ovlplaats}."},
   {t:"p",tpl:"De begrafenis/crematie staat momenteel gepland op {k:ui_gepland}, maar in verband met de aankomst van een naaste bloedverwant uit het buitenland, verzoeken wij hierbij om uitstel van {k:ui_dagen} dag(en), zodat deze kan plaatsvinden op {k:ui_nieuw}."},
   {t:"h",s:"Toelichting:"},
   {t:"p",tpl:"Een direct familielid van de overledene reist momenteel vanuit het buitenland naar Nederland. Uit respect voor de familieband en om hen in staat te stellen afscheid te nemen, vragen wij dit uitstel."},
@@ -497,7 +497,7 @@ function itemHTML(it){
 }
 function rowHTML(r){
   let inner;
-  if(r.sig) inner=(r.nk?`<div>Naam: <input type="text" class="inline" data-k="${r.nk}"></div>`:"")+`<div class="sig" aria-hidden="true"></div><span class="hint">handtekening op papier</span>`;
+  if(r.sig) inner=(r.nc?`<div>Naam: <span class="cval" data-c="${r.nc}"></span></div>`:r.nk?`<div>Naam: <input type="text" class="inline" data-k="${r.nk}"></div>`:"")+`<div class="sig" aria-hidden="true"></div><span class="hint">handtekening op papier</span>`;
   else if(r.it.length===1 && r.it[0].t==="x") inner=`<input type="text" data-k="${r.it[0].k}">`;
   else if(r.it.length===1 && r.it[0].t==="a") inner=`<textarea data-k="${r.it[0].k}" rows="2"></textarea>`;
   else if(r.stack) inner=r.it.map(itemHTML).map(h=>`<div style="margin:2px 0">${h}</div>`).join("");
@@ -524,6 +524,10 @@ const COMPUTED={
     return h&&!m?"man":m&&!h?"vrouw":"…";
   },
   vz_naam(){ return val("ui_verzorger")||"…"; },
+  vz_naam_tel(){
+    const n=val("ui_verzorger"), t=val("ui_tel");
+    return n?(t?`${n} (${t})`:n):"…";
+  },
   familie_van(){ return "Namens de familie van "+COMPUTED.aanhefnaam(); },
   leeftijd(){
     const g=parseNlDatum(val("ov_gebdatum")), o=parseNlDatum(val("ov_ovldatum"));
@@ -696,7 +700,8 @@ function itemDoc(it){
 function rowDoc(r,i){
   const bg=i%2===0?"#F2F1EA":"#EAE8DC";
   let inner;
-  if(r.sig) inner=(r.nk?`<p style="margin:0 0 4pt 0">Naam: ${esc(val(r.nk))}</p>`:"")+`<p style="margin:0">&nbsp;</p><p style="margin:0">&nbsp;</p>`;
+  if(r.sig){const nm=r.nc?(COMPUTED[r.nc]?COMPUTED[r.nc]():""):r.nk?val(r.nk):null;
+    inner=(nm!=null?`<p style="margin:0 0 4pt 0">Naam: ${esc(nm)}</p>`:"")+`<p style="margin:0">&nbsp;</p><p style="margin:0">&nbsp;</p>`;}
   else if(r.stack) inner=r.it.map(itemDoc).filter(Boolean).map(h=>`<p style="margin:0">${h}</p>`).join("");
   else inner=r.it.map(itemDoc).filter(Boolean).join(" ")||"&nbsp;";
   return `<tr><td class="lbl" style="background:${bg}">${esc(r.l)||"&nbsp;"}</td><td class="inv">${inner}</td></tr>`;
@@ -812,7 +817,8 @@ function secXml(bl){
   bl.rows.forEach((r,i)=>{
     const zeb=i%2===0?"F2F1EA":"EAE8DC";
     let valXml;
-    if(r.sig) valXml=(r.nk?par(run("Naam: "+val(r.nk)),{after:60}):"")+par("",{after:0})+par("",{after:0})+par("",{after:0});
+    if(r.sig){const nm=r.nc?(COMPUTED[r.nc]?COMPUTED[r.nc]():""):r.nk?val(r.nk):null;
+      valXml=(nm!=null?par(run("Naam: "+nm),{after:60}):"")+par("",{after:0})+par("",{after:0})+par("",{after:0});}
     else if(r.stack) valXml=(r.it.map(itemTxt).filter(Boolean).map(t=>par(run(t),{after:0})).join(""))||par("",{after:0});
     else{
       const t=r.it.map(itemTxt).filter(Boolean).join("   ");
@@ -996,7 +1002,8 @@ function odtBody(f){
       bl.rows.forEach((r,i)=>{
         const zs=i%2===0?"CZ1":"CZ2";
         let vp;
-        if(r.sig) vp=(r.nk?odtP("Naam: "+val(r.nk),"PC"):"")+odtP("","PC")+odtP("","PC")+odtP("","PC");
+        if(r.sig){const nm=r.nc?(COMPUTED[r.nc]?COMPUTED[r.nc]():""):r.nk?val(r.nk):null;
+      vp=(nm!=null?odtP("Naam: "+nm,"PC"):"")+odtP("","PC")+odtP("","PC")+odtP("","PC");}
         else if(r.stack) vp=(r.it.map(itemTxt).filter(Boolean).map(t=>odtP(t,"PC")).join(""))||odtP("","PC");
         else vp=odtP(r.it.map(itemTxt).filter(Boolean).join("   "),"PC");
         rows+=`<table:table-row>${odtCell(odtP(r.l||"","PC","TB"),zs)}${odtCell(vp,"CV")}</table:table-row>`;
@@ -1119,7 +1126,8 @@ function buildRtf(f){
       bl.rows.forEach((r,i)=>{
         const zeb=i%2===0?5:6;
         let v;
-        if(r.sig) v=(r.nk?("Naam: "+resc(val(r.nk))+"\\line "):"")+"\\line \\line ";
+        if(r.sig){const nm=r.nc?(COMPUTED[r.nc]?COMPUTED[r.nc]():""):r.nk?val(r.nk):null;
+          v=(nm!=null?("Naam: "+resc(nm)+"\\line "):"")+"\\line \\line ";}
         else if(r.stack) v=r.it.map(itemTxt).filter(Boolean).map(resc).join("\\line ");
         else v=resc(r.it.map(itemTxt).filter(Boolean).join("   "));
         B+=`\\trowd\\trgaph80\\clcbpat${zeb}${brd()}\\cellx3810\\clcbpat7${brd()}\\cellx9072`+
@@ -1173,7 +1181,8 @@ function buildTxt(f){
     if(bl.t==="sec"){
       if(bl.title) L.push("=== "+bl.title+" ===");
       bl.rows.forEach(r=>{
-        if(r.sig){ L.push((r.l||"")+": "+(r.nk&&val(r.nk)?("Naam: "+val(r.nk)+"  "):"")+"______________________________"); return; }
+        if(r.sig){const nm=r.nc?(COMPUTED[r.nc]?COMPUTED[r.nc]():""):r.nk?val(r.nk):"";
+          L.push((r.l||"")+": "+(nm?("Naam: "+nm+"  "):"")+"______________________________"); return; }
         const v=r.it.map(itemT).filter(Boolean).join("   ");
         L.push((r.l?r.l+": ":"")+v);
       });
