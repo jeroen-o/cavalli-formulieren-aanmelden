@@ -132,7 +132,11 @@
     <label class="btn ghost" for="jsonFile" tabindex="0">Dossier inlezen (JSON)</label>
     <input type="file" id="jsonFile" accept=".json,application/json" hidden>
     <button class="btn ghost" id="alleDocx" type="button">Alle formulieren downloaden (zip)</button>
-    <label class="chk zuinig"><input type="checkbox" id="alleZw"> Zwart-wit (alleen logo in kleur)</label>
+    <select id="alleFmt" class="fmt" aria-label="Formaat voor alle formulieren">
+      <option value="pdf" selected>als PDF</option>
+      <option value="docx">als Word (.docx)</option>
+    </select>
+    <label class="chk zuinig"><input type="checkbox" id="alleZw" checked> Zwart-wit (alleen logo in kleur)</label>
     <span class="hint" id="jsonStatus">Slaat álle velden van alle tabbladen op in één bestand.</span>
   </div>
 </header>
@@ -209,7 +213,7 @@ const FORMS=[
   {t:"sec",title:"Ondertekening",rows:[
     R("Plaats van ondertekening",X("ob_plaats")),R("Datum van ondertekening",X("ob_datum")),
     {l:"Handtekening opdrachtgever voor opdracht, ontvangst algemene voorwaarden en akkoord verklaring persoonsgegevens",it:[],sig:1,nc:"og_volnaam"},
-    {l:"Handtekening uitvaartbegeleider",it:[],sig:1,nk:"ob_begeleider"}]},
+    {l:"Handtekening uitvaartbegeleider",it:[],sig:1,nc:"ob_beg_tel"}]},
   {t:"av"}
  ]},
 
@@ -299,7 +303,7 @@ const FORMS=[
     R("4",T("De begraafplaats of het crematorium aanvaardt geen aansprakelijkheid voor eventuele gevolgen voortvloeiend uit een onjuiste beantwoording van de gestelde vragen of het niet naleven van de voorwaarden genoemd onder punt 3."))],num:1},
   {t:"sec",title:"",rows:[R("Plaats van ondertekening",X("cr_ondplaats")),
     R("Datum van ondertekening",X("cr_onddatum")),
-    {l:"Handtekening opdrachtgever",it:[],sig:1,nc:"og_volnaam"},{l:"Handtekening uitvaartbegeleider",it:[],sig:1,nk:"cr_begeleider"}]},
+    {l:"Handtekening opdrachtgever",it:[],sig:1,nc:"og_volnaam"},{l:"Handtekening uitvaartbegeleider",it:[],sig:1,nc:"cr_beg_tel"}]},
   {t:"sec",title:"Bijzonderheden dienst",rows:[
     R("Bijzonderheden dienst",C("cr_bnvt","n.v.t.")),
     R("Wilt u voor de afscheidsdienst afscheid te nemen?",C("cr_afsja","Ja"),C("cr_afsnee","Nee")),
@@ -399,7 +403,7 @@ const FORMS=[
   {t:"sec",title:"Opslaan en downloaden",rows:[
     R("Bestandsformaat kiezen",T("Kies in het uitklapmenu: .docx (aanbevolen, ook voor Google Docs en Google Drive), .doc (oudere Word-versies), .odt (LibreOffice/OpenOffice), .rtf (universeel), .txt (platte tekst) of .dotx (Word-sjabloon). Klik daarna op Opslaan.")),
     R("Bestandsnaam",T("De naam wordt automatisch voornaam_achternaam_datum_formulier. Het dossier (JSON) krijgt datum \u00e9n tijd in de naam; PDF's eindigen op _kleur of _zwart-wit.")),
-    R("Alles in één keer",T("De knop 'Alle formulieren downloaden (zip)' bovenaan levert alle formulieren en de algemene voorwaarden als Word-bestanden in één zip — in kleur, of met het vinkje ernaast in zwart-wit met alleen het logo in kleur.")),
+    R("Alles in één keer",T("De knop 'Alle formulieren downloaden (zip)' bovenaan levert alle formulieren en de algemene voorwaarden in één zip — naar keuze als Word-bestanden of als PDF's, in kleur of in zwart-wit met alleen het logo in kleur.")),
     R("Downloaden als PDF",T("Opent het afdrukvenster in een nieuw venster; kies daar 'Opslaan als PDF'. Sta hiervoor pop-ups toe.")),
     R("Zuinig printen",T("Vink 'Zuinig printen' aan voor een zwart-witversie waarin alleen het logo in kleur blijft — bespaart inkt bij het printen.")),
     R("Huisstijl",T("Alle documenten krijgen automatisch het Cavalli-logo, de huisstijlkleuren en de voettekst met paginanummering."))]},
@@ -524,10 +528,9 @@ const COMPUTED={
     return h&&!m?"man":m&&!h?"vrouw":"…";
   },
   vz_naam(){ return val("ui_verzorger")||"…"; },
-  vz_naam_tel(){
-    const n=val("ui_verzorger"), t=val("ui_tel");
-    return n?(t?`${n} (${t})`:n):"…";
-  },
+  vz_naam_tel(){ return naamTel(val("ui_verzorger")); },
+  ob_beg_tel(){ return naamTel(val("ob_begeleider")); },
+  cr_beg_tel(){ return naamTel(val("cr_begeleider")); },
   familie_van(){ return "Namens de familie van "+COMPUTED.aanhefnaam(); },
   leeftijd(){
     const g=parseNlDatum(val("ov_gebdatum")), o=parseNlDatum(val("ov_ovldatum"));
@@ -537,6 +540,10 @@ const COMPUTED={
     return j>=0&&j<130?String(j):"…";
   }
 };
+function naamTel(n){
+  const t=val("ui_tel");
+  return n?(t?`${n} (${t})`:n):"…";
+}
 /* Nederlandse datum lezen: 11-02-1969, 11/02/'69, 3 maart 1941, 14 juli 2026 */
 const NL_MAANDEN={jan:1,feb:2,mrt:3,maa:3,apr:4,mei:5,jun:6,jul:7,aug:8,sep:9,okt:10,nov:11,dec:12};
 function parseNlDatum(s){
@@ -597,7 +604,7 @@ function avHTML(){
     <div class="avbody">${AV_INTRO.map(p=>`<p>${esc(p)}</p>`).join("")}<table>${rows}</table></div></details>`;
 }
 function signsHTML(){
-  return `<div class="sig"></div><p class="sigcap"><span class="cval" data-c="vz_naam"></span><br>Cavalli Uitvaartbegeleiding</p>
+  return `<div class="sig"></div><p class="sigcap"><span class="cval" data-c="vz_naam_tel"></span><br>Cavalli Uitvaartbegeleiding</p>
           <div class="sig"></div><p class="sigcap"><span class="cval" data-c="og_volnaam"></span><br><span class="cval" data-c="familie_van"></span></p>`;
 }
 
@@ -624,7 +631,7 @@ FORMS.forEach((f,i)=>{
          </select>
          <button class="btn" data-export="${f.id}">Opslaan</button>
          <button class="btn ghost" data-pdf="${f.id}">Downloaden als PDF</button>
-         <label class="chk zuinig"><input type="checkbox" id="zuinig-${f.id}"> Zuinig printen (zwart-wit, alleen logo in kleur)</label>
+         <label class="chk zuinig"><input type="checkbox" id="zuinig-${f.id}" checked> Zuinig printen (zwart-wit, alleen logo in kleur)</label>
          <span class="hint">Bestandsnaam: voornaam_achternaam_datum_formulier</span><span class="spacer"></span></div>`;
   if(f.id==="pg"){
     html+=`<div class="toolbar"><label class="btn ghost" for="pgfile" tabindex="0">Word of PDF inlezen</label>
@@ -741,7 +748,7 @@ function docBody(f){
     else if(bl.t==="avt") body+=avTableHtmlDoc();
     else if(bl.t==="signs"){
       body+=`<p>&nbsp;</p><p>………………………………………………………</p>
-        <p>${esc(COMPUTED.vz_naam())}<br>Cavalli Uitvaartbegeleiding</p>
+        <p>${esc(COMPUTED.vz_naam_tel())}<br>Cavalli Uitvaartbegeleiding</p>
         <p>&nbsp;</p><p>………………………………………………………</p>
         <p>${esc(COMPUTED.og_volnaam())}<br>${esc(COMPUTED.familie_van())}</p>`;
     }
@@ -861,7 +868,7 @@ function docBodyXml(f){
     else if(bl.t==="avt") B+=avTableXml();
     else if(bl.t==="signs"){
       B+=par(run(""),{})+par(run("………………………………………………………"),{})+
-         par(run(COMPUTED.vz_naam())+`<w:r><w:br/></w:r>`+run("Cavalli Uitvaartbegeleiding"),{after:240})+
+         par(run(COMPUTED.vz_naam_tel())+`<w:r><w:br/></w:r>`+run("Cavalli Uitvaartbegeleiding"),{after:240})+
          par(run(""),{})+par(run("………………………………………………………"),{})+
          par(run(COMPUTED.og_volnaam())+`<w:r><w:br/></w:r>`+run(COMPUTED.familie_van()),{});
     }
@@ -1027,7 +1034,7 @@ function odtBody(f){
     else if(bl.t==="avt") B+=avTableOdt();
     else if(bl.t==="signs"){
       B+=odtP("","P0")+odtP("………………………………………………………","P0")+
-         odtP(COMPUTED.vz_naam()+"\nCavalli Uitvaartbegeleiding","P0")+
+         odtP(COMPUTED.vz_naam_tel()+"\nCavalli Uitvaartbegeleiding","P0")+
          odtP("","P0")+odtP("………………………………………………………","P0")+
          odtP(COMPUTED.og_volnaam()+"\n"+COMPUTED.familie_van(),"P0");
     }
@@ -1156,7 +1163,7 @@ function buildRtf(f){
     }
     else if(bl.t==="signs"){
       B+=`\\pard\\sa120\\par \\pard\\sa120 ………………………………………………………\\par `.replace(/…/g,"\\u8230?")+
-         `\\pard\\sa240 ${resc(COMPUTED.vz_naam())}\\line Cavalli Uitvaartbegeleiding\\par `+
+         `\\pard\\sa240 ${resc(COMPUTED.vz_naam_tel())}\\line Cavalli Uitvaartbegeleiding\\par `+
          `\\pard\\sa120\\par \\pard\\sa120 ${"\\u8230?".repeat(37)}\\par `+
          `\\pard\\sa120 ${resc(COMPUTED.og_volnaam())}\\line ${resc(COMPUTED.familie_van())}\\par `;
     }
@@ -1206,7 +1213,7 @@ function buildTxt(f){
     else if(bl.t==="avt"){ AV.forEach(([n,t])=>L.push(n+"  "+t)); L.push(""); }
     else if(bl.t==="signs"){
       L.push(""); L.push("………………………………………………………");
-      L.push(COMPUTED.vz_naam()); L.push("Cavalli Uitvaartbegeleiding"); L.push("");
+      L.push(COMPUTED.vz_naam_tel()); L.push("Cavalli Uitvaartbegeleiding"); L.push("");
       L.push("………………………………………………………");
       L.push(COMPUTED.og_volnaam()); L.push(COMPUTED.familie_van());
     }
@@ -1693,18 +1700,225 @@ jsonFile.addEventListener("change",async()=>{
   }catch(err){ jsonStatus.textContent="Inlezen mislukt: "+err.message; }
   jsonFile.value="";
 });
+
+/* ============ Eigen PDF-generator (voor de zip-download) ============ */
+const HELV_W=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584,350,556,350,222,556,333,1000,556,556,333,1000,667,333,1000,350,611,350,350,222,222,333,333,350,556,1000,333,1000,500,333,944,350,500,667,278,333,556,556,556,556,260,556,333,737,370,556,584,333,737,333,400,584,333,333,333,556,537,278,333,333,365,556,834,834,834,611,667,667,667,667,667,667,1000,722,667,667,667,667,278,278,278,278,722,722,778,778,778,778,778,584,778,722,722,722,722,667,667,611,556,556,556,556,556,556,889,500,556,556,556,556,278,278,278,278,556,556,556,556,556,556,556,584,611,556,556,556,556,500,556,500];
+const LOGO_JPG="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";
+const PDF_MAP={0x2026:0x85,0x2014:0x97,0x2013:0x96,0x2018:0x91,0x2019:0x92,0x201C:0x93,0x201D:0x94,0x20AC:0x80,0x2022:0x95};
+function pdfBytes(s){ // tekst -> WinAnsi-bytes (checkboxen vooraf vervangen)
+  const out=[];
+  for(const ch of String(s)){
+    let c=ch.codePointAt(0);
+    if(c===0x2612){out.push(91,88,93);continue;}      // ☒ -> [X]
+    if(c===0x2610){out.push(91,32,93);continue;}      // ☐ -> [ ]
+    if(PDF_MAP[c]!=null)c=PDF_MAP[c];
+    out.push(c<=255?c:63); // onbekend -> ?
+  }
+  return out;
+}
+function pdfEsc(bytes){
+  let s="";
+  for(const b of bytes){
+    if(b===40||b===41||b===92) s+="\\"+String.fromCharCode(b);
+    else if(b<32||b>126) s+="\\"+b.toString(8).padStart(3,"0");
+    else s+=String.fromCharCode(b);
+  }
+  return s;
+}
+function pdfW(bytes,size){let w=0;for(const b of bytes)w+=(HELV_W[b]||500);return w*size/1000;}
+function pdfWrap(text,size,maxW){
+  const lines=[];
+  for(const par of String(text).split("\n")){
+    const woorden=par.split(/\s+/).filter(Boolean);
+    if(!woorden.length){lines.push([]);continue;}
+    let cur=[];
+    for(const w of woorden){
+      const probe=cur.length?cur.concat([32]).concat(pdfBytes(w)):pdfBytes(w);
+      if(cur.length&&pdfW(probe,size)>maxW){lines.push(cur);cur=pdfBytes(w);}
+      else cur=probe;
+    }
+    lines.push(cur);
+  }
+  return lines;
+}
+function buildPdf(f,bw){
+  const PW=595.28,PH=841.89,ML=48,MR=48,MT=48,MB=64,CW=PW-ML-MR;
+  const K=bw?{prim:[0,0,0],don:[0,0,0],tekst:[0,0,0],rand:[0,0,0],z1:null,z2:null,inv:null,wit:[0,0,0],secbg:null}
+             :{prim:[0x95/255,0x93/255,0x69/255],don:[0x6E/255,0x6C/255,0x4B/255],tekst:[0x3A/255,0x39/255,0x30/255],
+               rand:[0xD9/255,0xD7/255,0xC8/255],z1:[0xF2/255,0xF1/255,0xEA/255],z2:[0xEA/255,0xE8/255,0xDC/255],
+               inv:[0xFA/255,0xFA/255,0xF7/255],wit:[1,1,1],secbg:[0x95/255,0x93/255,0x69/255]};
+  const pages=[]; let C="", y=PH-MT;
+  const col=(c)=>c.map(v=>v.toFixed(3)).join(" ");
+  const rect=(x,yy,w,hh,fill,stroke)=>{
+    if(fill) C+=`${col(fill)} rg ${x.toFixed(2)} ${yy.toFixed(2)} ${w.toFixed(2)} ${hh.toFixed(2)} re f\n`;
+    if(stroke) C+=`${col(stroke)} RG 0.5 w ${x.toFixed(2)} ${yy.toFixed(2)} ${w.toFixed(2)} ${hh.toFixed(2)} re S\n`;
+  };
+  const line=(x1,y1,x2,y2,c,w)=>{C+=`${col(c)} RG ${w} w ${x1.toFixed(2)} ${y1.toFixed(2)} m ${x2.toFixed(2)} ${y2.toFixed(2)} l S\n`;};
+  const text=(x,yy,s,size,c,italic)=>{
+    const b=pdfBytes(s);
+    C+=`BT /${italic?"F2":"F1"} ${size} Tf ${col(c)} rg ${x.toFixed(2)} ${yy.toFixed(2)} Td (${pdfEsc(b)}) Tj ET\n`;
+    return pdfW(b,size);
+  };
+  const nieuwePagina=()=>{pages.push(C);C="";y=PH-MT;};
+  const ruimte=(nodig)=>{ if(y-nodig<MB) nieuwePagina(); };
+  const alinea=(s,{size=11,c=K.tekst,italic=false,after=8,x=ML,w=CW}={})=>{
+    const lines=pdfWrap(s,size,w), lh=size*1.3;
+    for(const ln of lines){
+      ruimte(lh);
+      C+=`BT /${italic?"F2":"F1"} ${size} Tf ${col(c)} rg ${x.toFixed(2)} ${(y-size).toFixed(2)} Td (${pdfEsc(ln)}) Tj ET\n`;
+      y-=lh;
+    }
+    y-=after;
+  };
+  // celtekst: geeft regels terug voor hoogteberekening
+  const celRegels=(s,size,w)=>pdfWrap(s,size,w-8);
+  const rij=(cellen,hMin)=>{ // cellen: [{t,w,fill,c,italic,size,leeg}]
+    const size=11, lh=size*1.3, pad=4;
+    let regels=cellen.map(cl=>cl.leeg?[]:celRegels(cl.t,cl.size||size,cl.w));
+    let hh=Math.max(hMin||0,...regels.map(r=>r.length*lh+2*pad),lh+2*pad);
+    ruimte(hh);
+    let x=ML;
+    cellen.forEach((cl,i)=>{
+      rect(x,y-hh,cl.w,hh,cl.fill,K.rand);
+      let ty=y-pad-(cl.size||size);
+      for(const ln of regels[i]){
+        C+=`BT /${cl.italic?"F2":"F1"} ${cl.size||size} Tf ${col(cl.c||K.tekst)} rg ${(x+pad).toFixed(2)} ${ty.toFixed(2)} Td (${pdfEsc(ln)}) Tj ET\n`;
+        ty-=lh;
+      }
+      x+=cl.w;
+    });
+    y-=hh;
+  };
+  // ---- kop: titel links, logo rechts, lijn eronder ----
+  const logoW=75, logoH=75*125/201;
+  ruimte(logoH+16);
+  C+=`q ${logoW} 0 0 ${logoH.toFixed(2)} ${(PW-MR-logoW).toFixed(2)} ${(y-logoH).toFixed(2)} cm /Im1 Do Q\n`;
+  text(ML,y-logoH+4,f.title,13,K.prim);
+  y-=logoH+4;
+  line(ML,y,PW-MR,y,K.prim,1.5);
+  y-=14;
+  if(f.sub) alinea(f.sub,{c:K.don,italic:true});
+  // ---- blokken ----
+  const LBL=CW*0.42, VAL=CW-LBL;
+  const secTabel=(bl)=>{
+    if(bl.title) rij([{t:bl.title,w:CW,fill:K.secbg,c:bw?K.tekst:K.wit}]);
+    bl.rows.forEach((r,i)=>{
+      const fillL=i%2===0?K.z1:K.z2;
+      let v, hMin=0;
+      if(r.sig){
+        const nm=r.nc?(COMPUTED[r.nc]?COMPUTED[r.nc]():""):r.nk?val(r.nk):null;
+        v=nm!=null?("Naam: "+nm+"\n \n "):"\n \n "; hMin=52;
+      }
+      else if(r.stack) v=r.it.map(itemTxt).filter(Boolean).join("\n");
+      else v=r.it.map(itemTxt).filter(Boolean).join("   ");
+      rij([{t:r.l||"",w:LBL,fill:fillL,c:K.don},{t:v||"",w:VAL,fill:K.inv,leeg:!v}],hMin);
+    });
+    y-=8;
+  };
+  const avTabel=()=>{
+    const NR=32, TX=CW-NR;
+    AV.forEach(([n,t])=>{
+      const head=!n.includes(".");
+      if(head) rij([{t:n,w:NR,fill:K.secbg,c:bw?K.tekst:K.wit},{t,w:TX,fill:K.secbg,c:bw?K.tekst:K.wit}]);
+      else rij([{t:n,w:NR,fill:K.z1,c:K.don},{t,w:TX,fill:K.inv}]);
+    });
+  };
+  f.blocks.forEach(bl=>{
+    if(bl.t==="sec") secTabel(bl);
+    else if(bl.t==="p"){
+      let s=bl.tpl.replace(/\{k:([a-z0-9_]+)\}/g,(m,k)=>val(k)||"…")
+                  .replace(/\{c:([a-z0-9_]+)\}/g,(m,c)=>COMPUTED[c]?COMPUTED[c]():"…");
+      if(bl.chk) s=(S[bl.chk]?"[X] ":"[ ] ")+s;
+      alinea(s,{c:bl.b?K.don:K.tekst});
+    }
+    else if(bl.t==="h") alinea(bl.s,{c:K.don});
+    else if(bl.t==="i") alinea(bl.s,{c:K.don,italic:true});
+    else if(bl.t==="avintro") AV_INTRO.forEach(t=>alinea(t));
+    else if(bl.t==="avt") avTabel();
+    else if(bl.t==="av"){
+      nieuwePagina();
+      alinea("Algemene voorwaarden",{c:K.prim,after:2});
+      line(ML,y,PW-MR,y,K.prim,0.75); y-=12;
+      AV_INTRO.forEach(t=>alinea(t));
+      avTabel();
+    }
+    else if(bl.t==="signs"){
+      y-=10;
+      const blok=(naam,onder)=>{
+        ruimte(70);
+        alinea("………………………………………………………",{after:2});
+        alinea(naam,{after:0}); alinea(onder,{after:18});
+      };
+      blok(COMPUTED.vz_naam_tel(),"Cavalli Uitvaartbegeleiding");
+      blok(COMPUTED.og_volnaam(),COMPUTED.familie_van());
+    }
+  });
+  pages.push(C);
+  // ---- voettekst per pagina ----
+  const totaal=pages.length;
+  const paginas=pages.map((pc,i)=>{
+    let fc=pc;
+    fc+=`${col(K.rand)} RG 0.5 w ${ML} ${MB-14} m ${PW-MR} ${MB-14} l S\n`;
+    const ft=`Cavalli Uitvaartbegeleiding   |   Pagina ${i+1} van ${totaal}`;
+    const fb=pdfBytes(ft);
+    fc+=`BT /F1 10 Tf ${col(K.don)} rg ${ML} ${MB-26} Td (${pdfEsc(fb)}) Tj ET\n`;
+    return fc;
+  });
+  // ---- PDF-bestand samenstellen ----
+  const enc=new TextEncoder();
+  const logoBytes=b64ToU8(LOGO_JPG);
+  const objs=[]; // 1=catalog,2=pages,3=F1,4=F2,5=Im1, daarna per pagina: page + content
+  const kids=paginas.map((_,i)=>`${6+i*2} 0 R`).join(" ");
+  objs[1]=`<</Type /Catalog /Pages 2 0 R>>`;
+  objs[2]=`<</Type /Pages /Kids [${kids}] /Count ${totaal}>>`;
+  objs[3]=`<</Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding>>`;
+  objs[4]=`<</Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding>>`;
+  const parts=[]; let offset=0;
+  const push=s=>{const b=typeof s==="string"?enc.encode(s):s;parts.push(b);offset+=b.length;};
+  const xref=[0];
+  push("%PDF-1.4\n%\xE2\xE3\xCF\xD3\n");
+  const schrijfObj=(num,inhoud,stream)=>{
+    xref[num]=offset;
+    push(`${num} 0 obj\n${inhoud}\n`);
+    if(stream){push("stream\n");push(stream);push("\nendstream\n");}
+    push("endobj\n");
+  };
+  schrijfObj(1,objs[1]); schrijfObj(2,objs[2]); schrijfObj(3,objs[3]); schrijfObj(4,objs[4]);
+  schrijfObj(5,`<</Type /XObject /Subtype /Image /Width 201 /Height 125 /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${logoBytes.length}>>`,logoBytes);
+  paginas.forEach((pc,i)=>{
+    const cb=enc.encode(pc);
+    schrijfObj(6+i*2,`<</Type /Page /Parent 2 0 R /MediaBox [0 0 ${PW} ${PH}] /Resources <</Font <</F1 3 0 R /F2 4 0 R>> /XObject <</Im1 5 0 R>>>> /Contents ${7+i*2} 0 R>>`);
+    schrijfObj(7+i*2,`<</Length ${cb.length}>>`,cb);
+  });
+  const xs=offset;
+  const n=xref.length;
+  let xr=`xref\n0 ${n}\n0000000000 65535 f \n`;
+  for(let i=1;i<n;i++) xr+=String(xref[i]).padStart(10,"0")+" 00000 n \n";
+  push(xr);
+  push(`trailer\n<</Size ${n} /Root 1 0 R>>\nstartxref\n${xs}\n%%EOF`);
+  const totLen=parts.reduce((s,b)=>s+b.length,0);
+  const out=new Uint8Array(totLen); let o=0;
+  for(const b of parts){out.set(b,o);o+=b.length;}
+  return out;
+}
+
 document.getElementById("alleDocx").addEventListener("click",async()=>{
   jsonStatus.textContent="Bezig met samenstellen\u2026";
   try{
     const files=[];
     const zw=document.getElementById("alleZw").checked;
+    const fmt=document.getElementById("alleFmt").value;
     for(const f of FORMS){
       if(f.id==="hl") continue; // handleiding niet in het pakket
-      const b=buildDocx(f,false,zw);
-      files.push({name:bestandsnaam(f)+".docx",data:new Uint8Array(await b.arrayBuffer())});
+      if(fmt==="pdf"){
+        files.push({name:bestandsnaam(f)+".pdf",data:buildPdf(f,zw)});
+      } else {
+        const b=buildDocx(f,false,zw);
+        files.push({name:bestandsnaam(f)+".docx",data:new Uint8Array(await b.arrayBuffer())});
+      }
     }
     const zip=zipStore(files);
-    const bn=`Cavalli_alle_formulieren_${zw?"zwart-wit":"kleur"}_${datumTijd()}.zip`;
+    const bn=`Cavalli_alle_formulieren_${fmt==="pdf"?"pdf":"word"}_${zw?"zwart-wit":"kleur"}_${datumTijd()}.zip`;
     downloadBlob(new Blob([zip],{type:"application/zip"}),bn,jsonStatus);
     jsonStatus.textContent=`${files.length} formulieren gedownload als ${bn} (Word-bestanden in \u00e9\u00e9n zip).`;
   }catch(err){ jsonStatus.textContent="Samenstellen mislukt: "+err.message; }
